@@ -1,6 +1,10 @@
 twig:
     file_name_pattern: '*.twig'
 
+    globals:
+        # Keenthemes theme layout helper class
+        theme: '@App\Service\ThemeHelper'
+
 when@test:
     twig:
         strict_variables: true
