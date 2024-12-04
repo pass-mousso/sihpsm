@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -55,11 +57,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
+    /**
+     * @var Collection<int, Hospital>
+     */
+    #[ORM\OneToMany(targetEntity: Hospital::class, mappedBy: 'owner')]
+    private Collection $hospitals;
+
+    /**
+     * @var Collection<int, UserSubscription>
+     */
+    #[ORM\OneToMany(targetEntity: UserSubscription::class, mappedBy: 'user_id')]
+    private Collection $userSubscriptions;
+
     public function __construct(){
         $this->created_at = new \DateTimeImmutable();
         $this->updated_at = new \DateTimeImmutable();
         $this->isVerified = false;
         $this->status = true;
+        $this->hospitals = new ArrayCollection();
+        $this->userSubscriptions = new ArrayCollection();
 
     }
 
@@ -223,6 +239,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Hospital>
+     */
+    public function getHospitals(): Collection
+    {
+        return $this->hospitals;
+    }
+
+    public function addHospital(Hospital $hospital): static
+    {
+        if (!$this->hospitals->contains($hospital)) {
+            $this->hospitals->add($hospital);
+            $hospital->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHospital(Hospital $hospital): static
+    {
+        if ($this->hospitals->removeElement($hospital)) {
+            // set the owning side to null (unless already changed)
+            if ($hospital->getOwner() === $this) {
+                $hospital->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserSubscription>
+     */
+    public function getUserSubscriptions(): Collection
+    {
+        return $this->userSubscriptions;
+    }
+
+    public function addUserSubscription(UserSubscription $userSubscription): static
+    {
+        if (!$this->userSubscriptions->contains($userSubscription)) {
+            $this->userSubscriptions->add($userSubscription);
+            $userSubscription->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserSubscription(UserSubscription $userSubscription): static
+    {
+        if ($this->userSubscriptions->removeElement($userSubscription)) {
+            // set the owning side to null (unless already changed)
+            if ($userSubscription->getUserId() === $this) {
+                $userSubscription->setUserId(null);
+            }
+        }
 
         return $this;
     }

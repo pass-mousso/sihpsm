@@ -28,6 +28,7 @@ services:
         environment:
             - PGADMIN_DEFAULT_EMAIL=admin@admin.com
             - PGADMIN_DEFAULT_PASSWORD=root
+            - SESSION_EXPIRATION_TIME=3600
         ports:
             - "8099:80"
         volumes:
