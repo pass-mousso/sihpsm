@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Bootstrap\DefaultLayoutController;
 use App\Entity\Country;
 use App\Form\CountryType;
 use App\Repository\CountryRepository;
@@ -12,11 +13,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/admin/parameters/country')]
-final class CountryController extends AbstractController
+final class CountryController extends DefaultLayoutController
 {
     #[Route(name: 'admin_country_index', methods: ['GET'])]
     public function index(CountryRepository $countryRepository): Response
     {
+        # Include vendors and javascript files for dashboard widgets
+//        $this->theme->addVendors(['amcharts', 'amcharts-maps', 'amcharts-stock']);
+
         return $this->render('country/index.html.twig', [
             'countries' => $countryRepository->findAll(),
         ]);
@@ -33,7 +37,7 @@ final class CountryController extends AbstractController
             $entityManager->persist($country);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_country_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_country_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('country/new.html.twig', [

@@ -9,6 +9,8 @@ framework:
     #esi: true
     #fragments: true
 
+    ide: '%env(SYMFONY_IDE)%'
+
 when@test:
     framework:
         test: true

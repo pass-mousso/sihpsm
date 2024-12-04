@@ -1,11 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends "#{theme.getParameter('KT_THEME_LAYOUT_DIR')}/_default.html.twig" %}
 
-{% block title %}New Country{% endblock %}
+{% block page_title %}New Country{% endblock %}
 
-{% block body %}
+{% block content %}
     <h1>Create new Country</h1>
 
     {{ include('country/_form.html.twig') }}
 
-    <a href="{{ path('app_country_index') }}">back to list</a>
+    <a href="{{ path('admin_country_index') }}">back to list</a>
 {% endblock %}
+

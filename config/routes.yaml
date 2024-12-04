@@ -16,17 +16,17 @@ dashboard:
 
 signin:
     path: /signin
-    controller: App\Controller\AuthController::signin
+    controller: App\Controller\Auth\AuthController::signin
 
 
-signup:
-    path: /signup
-    controller: App\Controller\AuthController::signup
+#signup:
+#    path: /signup
+#    controller: App\Controller\Auth\RegisterController::signup
 
 
 reset-password:
     path: /reset-password
-    controller: App\Controller\AuthController::reset_password
+    controller: App\Controller\Auth\AuthController::reset_password
 
 
 new-password:
