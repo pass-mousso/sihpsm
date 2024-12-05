@@ -20,7 +20,7 @@ services:
             - sih_bd_data:/var/lib/postgresql/data:rw
         networks:
             - ${NETWORKS_NAME}
-    ###< doctrine/doctrine-bundle ###
+    ###<doctrine/doctrine-bundle ###
 
     pgadmin:
         image: dpage/pgadmin4
