@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\HopitalFacilityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,6 +27,17 @@ class HopitalFacility
 
     #[ORM\Column]
     private ?\DateTimeImmutable $updated_at = null;
+
+    /**
+     * @var Collection<int, Hopital>
+     */
+    #[ORM\OneToMany(targetEntity: Hopital::class, mappedBy: 'type')]
+    private Collection $hopitals;
+
+    public function __construct()
+    {
+        $this->hopitals = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -75,6 +88,36 @@ class HopitalFacility
     public function setUpdatedAt(\DateTimeImmutable $updated_at): static
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Hopital>
+     */
+    public function getHopitals(): Collection
+    {
+        return $this->hopitals;
+    }
+
+    public function addHopital(Hopital $hopital): static
+    {
+        if (!$this->hopitals->contains($hopital)) {
+            $this->hopitals->add($hopital);
+            $hopital->setType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHopital(Hopital $hopital): static
+    {
+        if ($this->hopitals->removeElement($hopital)) {
+            // set the owning side to null (unless already changed)
+            if ($hopital->getType() === $this) {
+                $hopital->setType(null);
+            }
+        }
 
         return $this;
     }

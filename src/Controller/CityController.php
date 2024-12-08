@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Bootstrap\DefaultLayoutController;
 use App\Entity\City;
 use App\Form\CityType;
 use App\Repository\CityRepository;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/city')]
-final class CityController extends AbstractController
+final class CityController extends DefaultLayoutController
 {
     #[Route(name: 'app_city_index', methods: ['GET'])]
     public function index(CityRepository $cityRepository): Response

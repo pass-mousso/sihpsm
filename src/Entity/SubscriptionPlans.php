@@ -10,6 +10,39 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: SubscriptionPlansRepository::class)]
 class SubscriptionPlans
 {
+    const TRAIL_DAYS = 7;
+
+    const MONTH = 1;
+
+    const YEAR = 2;
+
+    public const PLAN_TYPE = [
+        1 => 'Month',
+        2 => 'Year',
+    ];
+
+    const CURRENCY_SETTING = [
+      'USD' => 'USA dollar',
+      'EUR' => 'Euros',
+      'GBP' => 'Pounds Sterling',
+      'JPY' => 'Japanese Yen',
+      'CAD' => 'Canadian Dollar',
+      'AUD' => 'Australian Dollar',
+    ];
+
+    const STATUS = [
+        1 => 'Active',
+        2 => 'Inactive',
+        3 => 'Pending',
+        4 => 'Suspended',
+        5 => 'Expiring'
+    ];
+
+    const SMS_LIMIT = [
+        self::MONTH => 1000,
+        self::YEAR => 10000,
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -51,6 +84,9 @@ class SubscriptionPlans
     public function __construct()
     {
         $this->subscriptions = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
+        $this->is_default = false;
     }
 
     public function getId(): ?int
