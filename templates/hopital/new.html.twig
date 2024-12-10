@@ -81,59 +81,13 @@
                     </div>
                     <!--end::Step 3-->
                     <!--begin::Step 4-->
-                    <div class="stepper-item" data-kt-stepper-element="nav">
-                        <!--begin::Wrapper-->
-                        <div class="stepper-wrapper">
-                            <!--begin::Icon-->
-                            <div class="stepper-icon w-40px h-40px">
-                                <i class="ki-duotone ki-check fs-2 stepper-check"></i>
-                                <span class="stepper-number">4</span>
-                            </div>
-                            <!--end::Icon-->
-                            <!--begin::Label-->
-                            <div class="stepper-label">
-                                <h3 class="stepper-title">Plans Details</h3>
-                                <div class="stepper-desc fw-semibold">Set Your Payment Methods</div>
-                            </div>
-                            <!--end::Label-->
-                        </div>
-                        <!--end::Wrapper-->
-                        <!--begin::Line-->
-                        <div class="stepper-line h-40px"></div>
-                        <!--end::Line-->
-                    </div>
-                    <!--end::Step 4-->
-                    <!--begin::Step 5-->
-                    <div class="stepper-item" data-kt-stepper-element="nav">
-                        <!--begin::Wrapper-->
-                        <div class="stepper-wrapper">
-                            <!--begin::Icon-->
-                            <div class="stepper-icon w-40px h-40px">
-                                <i class="ki-duotone ki-check fs-2 stepper-check"></i>
-                                <span class="stepper-number">4</span>
-                            </div>
-                            <!--end::Icon-->
-                            <!--begin::Label-->
-                            <div class="stepper-label">
-                                <h3 class="stepper-title">Billing Details</h3>
-                                <div class="stepper-desc fw-semibold">Set Your Payment Methods</div>
-                            </div>
-                            <!--end::Label-->
-                        </div>
-                        <!--end::Wrapper-->
-                        <!--begin::Line-->
-                        <div class="stepper-line h-40px"></div>
-                        <!--end::Line-->
-                    </div>
-                    <!--end::Step 5-->
-                    <!--begin::Step 6-->
                     <div class="stepper-item mark-completed" data-kt-stepper-element="nav">
                         <!--begin::Wrapper-->
                         <div class="stepper-wrapper">
                             <!--begin::Icon-->
                             <div class="stepper-icon w-40px h-40px">
                                 <i class="ki-duotone ki-check fs-2 stepper-check"></i>
-                                <span class="stepper-number">5</span>
+                                <span class="stepper-number">4</span>
                             </div>
                             <!--end::Icon-->
                             <!--begin::Label-->
@@ -145,7 +99,7 @@
                         </div>
                         <!--end::Wrapper-->
                     </div>
-                    <!--end::Step 6-->
+                    <!--end::Step 4-->
                 </div>
                 <!--end::Nav-->
             </div>
@@ -155,7 +109,7 @@
         <!--begin::Content-->
         <div class="card d-flex flex-row-fluid flex-center">
             <!--begin::Form-->
-            <form class="card-body py-20 w-100 mw-xl-700px px-9" novalidate="novalidate" id="kt_create_account_form">
+                {{ form_start(form, { attr: { class:"card-body py-20 w-100 mw-xl-700px px-9", id:"kt_create_account_form" }}) }}
                 <!--begin::Step 1-->
                 <div class="current" data-kt-stepper-element="content">
                     <!--begin::Wrapper-->
@@ -172,11 +126,6 @@
                                     </i>
                                 </span>
                             </h2>
-                            <!--end::Title-->
-                            <!--begin::Notice-->
-                            <div class="text-muted fw-semibold fs-6">If you need more info, please check out
-                                <a href="#" class="link-primary fw-bold">Help Page</a>.</div>
-                            <!--end::Notice-->
                         </div>
                         <!--end::Heading-->
                         <!--begin::Input group-->
@@ -184,10 +133,10 @@
                             <!--begin::Row-->
                             <div class="row">
                                 <!--begin::Col-->
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <!--begin::Option-->
-                                    <input type="radio" class="btn-check" name="account_type" value="personal" checked="checked" id="kt_create_account_form_account_type_personal" />
-                                    <label class="btn btn-outline btn-outline-dashed btn-active-light-primary p-7 d-flex align-items-center mb-10" for="kt_create_account_form_account_type_personal">
+                                    <input type="radio" class="btn-check" name="{{ field_name(form.ownership) }}" value="{{ field_value(form.ownership[0]) }}" checked="checked" id="kt_create_account_form_account_type_public" />
+                                    <label class="btn btn-outline btn-outline-dashed btn-active-light-primary p-7 d-flex align-items-center mb-10" for="kt_create_account_form_account_type_public">
                                         <i class="ki-duotone ki-badge fs-3x me-5">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
@@ -197,8 +146,7 @@
                                         </i>
                                         <!--begin::Info-->
                                         <span class="d-block fw-semibold text-start">
-                                            <span class="text-gray-900 fw-bold d-block fs-4 mb-2">Personal Account</span>
-                                            <span class="text-muted fw-semibold fs-6">If you need more info, please check it out</span>
+                                            <span class="text-gray-900 fw-bold d-block fs-4 mb-2">Public</span>
                                         </span>
                                         <!--end::Info-->
                                     </label>
@@ -206,18 +154,33 @@
                                 </div>
                                 <!--end::Col-->
                                 <!--begin::Col-->
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <!--begin::Option-->
-                                    <input type="radio" class="btn-check" name="account_type" value="corporate" id="kt_create_account_form_account_type_corporate" />
-                                    <label class="btn btn-outline btn-outline-dashed btn-active-light-primary p-7 d-flex align-items-center" for="kt_create_account_form_account_type_corporate">
+                                    <input type="radio" class="btn-check" name="{{ field_name(form.ownership) }}" value="{{ field_value(form.ownership[1]) }}" id="kt_create_account_form_account_type_private" />
+                                    <label class="btn btn-outline btn-outline-dashed btn-active-light-primary p-7 d-flex align-items-center" for="kt_create_account_form_account_type_private">
                                         <i class="ki-duotone ki-briefcase fs-3x me-5">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                         </i>
                                         <!--begin::Info-->
                                         <span class="d-block fw-semibold text-start">
-                                            <span class="text-gray-900 fw-bold d-block fs-4 mb-2">Corporate Account</span>
-                                            <span class="text-muted fw-semibold fs-6">Create corporate account to mane users</span>
+                                            <span class="text-gray-900 fw-bold d-block fs-4 mb-2">Private</span>
+                                        </span>
+                                        <!--end::Info-->
+                                    </label>
+                                    <!--end::Option-->
+                                </div>
+                                <div class="col-lg-4">
+                                    <!--begin::Option-->
+                                    <input type="radio" class="btn-check" name="{{ field_name(form.ownership) }}" value="{{ field_value(form.ownership[2]) }}" id="kt_create_account_form_account_type_other" />
+                                    <label class="btn btn-outline btn-outline-dashed btn-active-light-primary p-7 d-flex align-items-center" for="kt_create_account_form_account_type_other">
+                                        <i class="ki-duotone ki-briefcase fs-3x me-5">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                        <!--begin::Info-->
+                                        <span class="d-block fw-semibold text-start">
+                                            <span class="text-gray-900 fw-bold d-block fs-4 mb-2">Non-profit</span>
                                         </span>
                                         <!--end::Info-->
                                     </label>
@@ -239,10 +202,10 @@
                 {% include 'hopital/form_business.html.twig' %}
                 <!--end::Step 3-->
                 <!--begin::Step 4-->
-                {% include 'hopital/form_detail_plan.html.twig' %}
+{#                {% include 'hopital/form_detail_plan.html.twig' %}#}
                 <!--end::Step 4-->
                 <!--begin::Step 5-->
-                {% include 'hopital/form_billing_detail.html.twig' %}
+{#                {% include 'hopital/form_billing_detail.html.twig' %}#}
                 <!--end::Step 5-->
                 <!--begin::Step 6-->
                 <div data-kt-stepper-element="content">
@@ -308,13 +271,15 @@
                     <!--begin::Wrapper-->
                     <div>
                         <button type="button" class="btn btn-lg btn-primary me-3" data-kt-stepper-action="submit">
-															<span class="indicator-label">Submit
-															<i class="ki-duotone ki-arrow-right fs-3 ms-2 me-0">
-																<span class="path1"></span>
-																<span class="path2"></span>
-															</i></span>
+                            <span class="indicator-label">Submit
+                                <i class="ki-duotone ki-arrow-right fs-3 ms-2 me-0">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>
+                            </span>
                             <span class="indicator-progress">Please wait...
-															<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
                         </button>
                         <button type="button" class="btn btn-lg btn-primary" data-kt-stepper-action="next">Continue
                             <i class="ki-duotone ki-arrow-right fs-4 ms-1 me-0">
@@ -325,7 +290,8 @@
                     <!--end::Wrapper-->
                 </div>
                 <!--end::Actions-->
-            </form>
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
             <!--end::Form-->
         </div>
         <!--end::Content-->

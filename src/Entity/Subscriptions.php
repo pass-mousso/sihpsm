@@ -49,6 +49,10 @@ class Subscriptions
     #[ORM\JoinColumn(nullable: false)]
     private ?SubscriptionPlans $plan = null;
 
+    #[ORM\ManyToOne(inversedBy: 'subscriptions')]
+    #[ORM\JoinColumn(name: 'user_id', nullable: false)]
+    private ?User $utilisateur = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -182,6 +186,18 @@ class Subscriptions
     public function setPlan(?SubscriptionPlans $plan): static
     {
         $this->plan = $plan;
+
+        return $this;
+    }
+
+    public function getUserId(): ?User
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUserId(?User $utilisateur): static
+    {
+        $this->utilisateur = $utilisateur;
 
         return $this;
     }

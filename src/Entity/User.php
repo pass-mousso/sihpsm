@@ -60,8 +60,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Hospital>
      */
-    #[ORM\OneToMany(targetEntity: Hospital::class, mappedBy: 'owner')]
-    private Collection $hospitals;
 
     /**
      * @var Collection<int, UserSubscription>
@@ -69,13 +67,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: UserSubscription::class, mappedBy: 'user_id')]
     private Collection $userSubscriptions;
 
+    /**
+     * @var Collection<int, Subscriptions>
+     */
+    #[ORM\OneToMany(targetEntity: Subscriptions::class, mappedBy: 'user_id')]
+    private Collection $subscriptions;
+
+    /**
+     * @var Collection<int, Hospital>
+     */
+    #[ORM\OneToMany(targetEntity: Hospital::class, mappedBy: 'owner')]
+    private Collection $hospitals;
+
     public function __construct(){
         $this->created_at = new \DateTimeImmutable();
         $this->updated_at = new \DateTimeImmutable();
         $this->isVerified = false;
         $this->status = true;
-        $this->hospitals = new ArrayCollection();
         $this->userSubscriptions = new ArrayCollection();
+        $this->subscriptions = new ArrayCollection();
+        $this->hospitals = new ArrayCollection();
 
     }
 
@@ -244,36 +255,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Hospital>
-     */
-    public function getHospitals(): Collection
-    {
-        return $this->hospitals;
-    }
-
-    public function addHospital(Hospital $hospital): static
-    {
-        if (!$this->hospitals->contains($hospital)) {
-            $this->hospitals->add($hospital);
-            $hospital->setOwner($this);
-        }
-
-        return $this;
-    }
-
-    public function removeHospital(Hospital $hospital): static
-    {
-        if ($this->hospitals->removeElement($hospital)) {
-            // set the owning side to null (unless already changed)
-            if ($hospital->getOwner() === $this) {
-                $hospital->setOwner(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, UserSubscription>
      */
     public function getUserSubscriptions(): Collection
@@ -297,6 +278,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($userSubscription->getUserId() === $this) {
                 $userSubscription->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Subscriptions>
+     */
+    public function getSubscriptions(): Collection
+    {
+        return $this->subscriptions;
+    }
+
+    public function addSubscription(Subscriptions $subscription): static
+    {
+        if (!$this->subscriptions->contains($subscription)) {
+            $this->subscriptions->add($subscription);
+            $subscription->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscription(Subscriptions $subscription): static
+    {
+        if ($this->subscriptions->removeElement($subscription)) {
+            // set the owning side to null (unless already changed)
+            if ($subscription->getUserId() === $this) {
+                $subscription->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Hospital>
+     */
+    public function getHospitals(): Collection
+    {
+        return $this->hospitals;
+    }
+
+    public function addHospital(Hospital $hospital): static
+    {
+        if (!$this->hospitals->contains($hospital)) {
+            $this->hospitals->add($hospital);
+            $hospital->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHospital(Hospital $hospital): static
+    {
+        if ($this->hospitals->removeElement($hospital)) {
+            // set the owning side to null (unless already changed)
+            if ($hospital->getOwner() === $this) {
+                $hospital->setOwner(null);
             }
         }
 

@@ -15,7 +15,7 @@ class HospitalEmails
 
     #[ORM\ManyToOne(inversedBy: 'hospitalEmails')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Hopital $hospital = null;
+    private ?Hospital $hospital = null;
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
@@ -28,12 +28,12 @@ class HospitalEmails
         return $this->id;
     }
 
-    public function getHospital(): ?Hopital
+    public function getHospital(): ?Hospital
     {
         return $this->hospital;
     }
 
-    public function setHospital(?Hopital $hospital): static
+    public function setHospital(?Hospital $hospital): static
     {
         $this->hospital = $hospital;
 

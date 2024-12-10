@@ -18,7 +18,7 @@ class HospitalStaff
 
     #[ORM\ManyToOne(inversedBy: 'hospitalStaff')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Hopital $hospital = null;
+    private ?Hospital $hospital = null;
 
     #[ORM\Column]
     private ?int $doctorsCount = null;
@@ -43,12 +43,12 @@ class HospitalStaff
         return $this;
     }
 
-    public function getHospital(): ?Hopital
+    public function getHospital(): ?Hospital
     {
         return $this->hospital;
     }
 
-    public function setHospital(?Hopital $hospital): static
+    public function setHospital(?Hospital $hospital): static
     {
         $this->hospital = $hospital;
 

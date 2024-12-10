@@ -12,6 +12,6 @@ class DashboardController extends DefaultLayoutController
         # Include vendors and javascript files for dashboard widgets
         $this->theme->addVendors(['amcharts', 'amcharts-maps', 'amcharts-stock']);
 
-        return $this->render('pages/dashboards/index.html.twig');
+        return $this->render('admin/pages/dashboards/index.html.twig');
     }
 }

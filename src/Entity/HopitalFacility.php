@@ -29,9 +29,9 @@ class HopitalFacility
     private ?\DateTimeImmutable $updated_at = null;
 
     /**
-     * @var Collection<int, Hopital>
+     * @var Collection<int, Hospital>
      */
-    #[ORM\OneToMany(targetEntity: Hopital::class, mappedBy: 'type')]
+    #[ORM\OneToMany(targetEntity: Hospital::class, mappedBy: 'type')]
     private Collection $hopitals;
 
     public function __construct()
@@ -93,14 +93,14 @@ class HopitalFacility
     }
 
     /**
-     * @return Collection<int, Hopital>
+     * @return Collection<int, Hospital>
      */
     public function getHopitals(): Collection
     {
         return $this->hopitals;
     }
 
-    public function addHopital(Hopital $hopital): static
+    public function addHopital(Hospital $hopital): static
     {
         if (!$this->hopitals->contains($hopital)) {
             $this->hopitals->add($hopital);
@@ -110,7 +110,7 @@ class HopitalFacility
         return $this;
     }
 
-    public function removeHopital(Hopital $hopital): static
+    public function removeHopital(Hospital $hopital): static
     {
         if ($this->hopitals->removeElement($hopital)) {
             // set the owning side to null (unless already changed)
