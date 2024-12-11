@@ -5,16 +5,21 @@ namespace App\EventSubscriber;
 use App\Entity\Hospital;
 use App\Entity\HospitalEmails;
 use App\Entity\HospitalPhoneNumbers;
+use App\Service\Utils;
+use Random\RandomException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Exception\InvalidOptionsException;
 
 class HospitalFormSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private Security $security)
+        private Security $security,
+        private Utils $utils
+    )
     {}
 
     public function onFormPostSubmit(FormEvent $event): void
@@ -24,6 +29,15 @@ class HospitalFormSubscriber implements EventSubscriberInterface
 
         if (!$hospital instanceof Hospital) {
             return;
+        }
+
+        try {
+            // Générer un identifiant uniquement numérique de 8 caractères
+            $identifier = $this->utils->generateUniqueId(8, 'numeric');
+            $hospital->setTenantIdentifier($identifier);
+
+        } catch (InvalidOptionsException|RandomException $e) {
+            echo 'Erreur : ' . $e->getMessage();
         }
 
         // Récupérez le business_contact depuis le formulaire

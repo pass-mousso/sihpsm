@@ -20,9 +20,9 @@ final class Version20241205092906 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE hopital (id SERIAL NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('COMMENT ON COLUMN hopital.created_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('COMMENT ON COLUMN hopital.updated_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('CREATE TABLE hospital (id SERIAL NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('COMMENT ON COLUMN hospital.created_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('COMMENT ON COLUMN hospital.updated_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE hopital_facility (id SERIAL NOT NULL, label VARCHAR(200) NOT NULL, description TEXT DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN hopital_facility.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN hopital_facility.updated_at IS \'(DC2Type:datetime_immutable)\'');
@@ -64,7 +64,7 @@ final class Version20241205092906 extends AbstractMigration
         $this->addSql('ALTER TABLE subscriptions DROP CONSTRAINT FK_4778A01E899029B');
         $this->addSql('ALTER TABLE user_subscription DROP CONSTRAINT FK_230A18D19D86650F');
         $this->addSql('ALTER TABLE user_subscription DROP CONSTRAINT FK_230A18D19A1887DC');
-        $this->addSql('DROP TABLE hopital');
+        $this->addSql('DROP TABLE hospital');
         $this->addSql('DROP TABLE hopital_facility');
         $this->addSql('DROP TABLE hospital');
         $this->addSql('DROP TABLE subscription_plans');

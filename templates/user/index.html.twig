@@ -119,9 +119,7 @@
                         </i>Export</button>
                     <!--end::Export-->
                     <!--begin::Add user-->
-                    <a href="{{ path('admin_hospital_new') }}" type="button" class="btn btn-primary">
-                        <i class="ki-duotone ki-plus fs-2"></i>Add User
-                    </a>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_customer">Add User</button>
                     <!--end::Add user-->
                 </div>
                 <!--end::Toolbar-->
@@ -264,19 +262,19 @@
                                                 <!--end::Label-->
                                                 <!--begin::Cancel-->
                                                 <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
-																					<i class="ki-duotone ki-cross fs-2">
-																						<span class="path1"></span>
-																						<span class="path2"></span>
-																					</i>
-																				</span>
+                                                    <i class="ki-duotone ki-cross fs-2">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i>
+                                                </span>
                                                 <!--end::Cancel-->
                                                 <!--begin::Remove-->
                                                 <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
-																					<i class="ki-duotone ki-cross fs-2">
-																						<span class="path1"></span>
-																						<span class="path2"></span>
-																					</i>
-																				</span>
+                                                    <i class="ki-duotone ki-cross fs-2">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i>
+                                                </span>
                                                 <!--end::Remove-->
                                             </div>
                                             <!--end::Image input-->
@@ -433,10 +431,18 @@
         <!--begin::Card body-->
         <div class="card-body py-4">
             <!--begin::Table-->
-            {% include 'hopital/table.html.twig' %}
+            {% include 'user/table.html.twig' %}
             <!--end::Table-->
         </div>
         <!--end::Card body-->
     </div>
     <!--end::Card-->
+    <!--begin::Modals-->
+    <!--begin::Modal - New Card-->
+    {% include('modal/user/kt_user_add_modal.html.twig') %}
+    <!--end::Modal - New Card-->
+    <!--begin::Modal - Update Card-->
+{#    {% include('modal/user/kt_user_edit_modal.html.twig') %}#}
+    <!--end::Modal - Update Card-->
+    <!--end::Modals-->
 {% endblock %}

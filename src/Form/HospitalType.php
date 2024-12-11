@@ -8,6 +8,7 @@ use App\Entity\Hospital;
 use App\Entity\HopitalFacility;
 use App\Entity\Region;
 use App\EventSubscriber\HospitalFormSubscriber;
+use App\Service\Utils;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
@@ -21,7 +22,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class HospitalType extends AbstractType
 {
     public function __construct(
-        private Security $security)
+        private Security $security,
+        private Utils $utils
+    )
     {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -89,7 +92,7 @@ class HospitalType extends AbstractType
             ])
         ;
 
-        $builder->addEventSubscriber(new HospitalFormSubscriber($this->security));
+        $builder->addEventSubscriber(new HospitalFormSubscriber($this->security, $this->utils));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

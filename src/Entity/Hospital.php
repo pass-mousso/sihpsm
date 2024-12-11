@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\HopitalRepository;
+use App\Repository\HospitalRepository;
+use App\Service\Utils;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: HopitalRepository::class)]
+#[ORM\Entity(repositoryClass: HospitalRepository::class)]
 class Hospital
 {
     const OWNERSHIP = [
@@ -92,25 +93,25 @@ class Hospital
     /**
      * @var Collection<int, HospitalPhoneNumbers>
      */
-    #[ORM\OneToMany(targetEntity: HospitalPhoneNumbers::class, mappedBy: 'hospital')]
+    #[ORM\OneToMany(targetEntity: HospitalPhoneNumbers::class, mappedBy: 'hospital', cascade: ["persist", "remove"])]
     private Collection $hospitalPhoneNumbers;
 
     /**
      * @var Collection<int, HospitalEmails>
      */
-    #[ORM\OneToMany(targetEntity: HospitalEmails::class, mappedBy: 'hospital')]
+    #[ORM\OneToMany(targetEntity: HospitalEmails::class, mappedBy: 'hospital', cascade: ["persist", "remove"])]
     private Collection $hospitalEmails;
 
     /**
      * @var Collection<int, HospitalManagers>
      */
-    #[ORM\OneToMany(targetEntity: HospitalManagers::class, mappedBy: 'hospital')]
+    #[ORM\OneToMany(targetEntity: HospitalManagers::class, mappedBy: 'hospital', cascade: ["persist", "remove"])]
     private Collection $hospitalManagers;
 
     /**
      * @var Collection<int, HospitalStaff>
      */
-    #[ORM\OneToMany(targetEntity: HospitalStaff::class, mappedBy: 'hospital')]
+    #[ORM\OneToMany(targetEntity: HospitalStaff::class, mappedBy: 'hospital', cascade: ["persist", "remove"])]
     private Collection $hospitalStaff;
 
     #[ORM\ManyToOne(inversedBy: 'hospitals')]

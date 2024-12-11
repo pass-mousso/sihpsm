@@ -9,6 +9,28 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: SubscriptionsRepository::class)]
 class Subscriptions
 {
+    const ACTIVE = 1;
+
+    const INACTIVE = 0;
+
+    const TYPE_FREE = 0;
+
+    const TYPE_STRIPE = 1;
+
+    const TYPE_PAYPAL = 2;
+
+    const TYPE_RAZORPAY = 3;
+
+    const TYPE_CASH = 4;
+
+    const TYPE_PAYTM = 5;
+
+    const TYPE_PAYSTACK = 6;
+
+    const EXPIRED = 0;
+
+    const NOT_EXPIRED = 1;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -22,36 +44,36 @@ class Subscriptions
     private ?int $status = null;
 
     #[ORM\Column]
-    private ?int $plan_amount = null;
+    private ?int $planAmount = null;
 
     #[ORM\Column]
-    private ?int $plan_frequency = null;
+    private ?int $planFrequency = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $starts_at = null;
+    private ?\DateTimeImmutable $startsAt = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $ends_at = null;
+    private ?\DateTimeImmutable $endsAt = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $trial_ends_at = null;
+    private ?\DateTimeImmutable $trialEndsAt = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $updated_at = null;
+    private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column(type: Types::BIGINT, nullable: true)]
-    private ?string $sms_limit = null;
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private ?int $smsLimit = null;
 
     #[ORM\ManyToOne(inversedBy: 'subscriptions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?SubscriptionPlans $plan = null;
 
     #[ORM\ManyToOne(inversedBy: 'subscriptions')]
-    #[ORM\JoinColumn(name: 'user_id', nullable: false)]
-    private ?User $utilisateur = null;
+    #[ORM\JoinColumn(name: 'owner', nullable: false)]
+    private ?User $owner = null;
 
     public function getId(): ?int
     {
@@ -84,96 +106,96 @@ class Subscriptions
 
     public function getPlanAmount(): ?int
     {
-        return $this->plan_amount;
+        return $this->planAmount;
     }
 
-    public function setPlanAmount(int $plan_amount): static
+    public function setPlanAmount(int $planAmount): static
     {
-        $this->plan_amount = $plan_amount;
+        $this->planAmount = $planAmount;
 
         return $this;
     }
 
     public function getPlanFrequency(): ?int
     {
-        return $this->plan_frequency;
+        return $this->planFrequency;
     }
 
-    public function setPlanFrequency(int $plan_frequency): static
+    public function setPlanFrequency(int $planFrequency): static
     {
-        $this->plan_frequency = $plan_frequency;
+        $this->planFrequency = $planFrequency;
 
         return $this;
     }
 
     public function getStartsAt(): ?\DateTimeImmutable
     {
-        return $this->starts_at;
+        return $this->startsAt;
     }
 
-    public function setStartsAt(\DateTimeImmutable $starts_at): static
+    public function setStartsAt(\DateTimeImmutable $startsAt): static
     {
-        $this->starts_at = $starts_at;
+        $this->startsAt = $startsAt;
 
         return $this;
     }
 
     public function getEndsAt(): ?\DateTimeImmutable
     {
-        return $this->ends_at;
+        return $this->endsAt;
     }
 
-    public function setEndsAt(\DateTimeImmutable $ends_at): static
+    public function setEndsAt(\DateTimeImmutable $endsAt): static
     {
-        $this->ends_at = $ends_at;
+        $this->endsAt = $endsAt;
 
         return $this;
     }
 
     public function getTrialEndsAt(): ?\DateTimeImmutable
     {
-        return $this->trial_ends_at;
+        return $this->trialEndsAt;
     }
 
-    public function setTrialEndsAt(\DateTimeImmutable $trial_ends_at): static
+    public function setTrialEndsAt(\DateTimeImmutable $trialEndsAt): static
     {
-        $this->trial_ends_at = $trial_ends_at;
+        $this->trialEndsAt = $trialEndsAt;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $updated_at): static
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
     public function getSmsLimit(): ?string
     {
-        return $this->sms_limit;
+        return $this->smsLimit;
     }
 
-    public function setSmsLimit(?string $sms_limit): static
+    public function setSmsLimit(?string $smsLimit): static
     {
-        $this->sms_limit = $sms_limit;
+        $this->smsLimit = $smsLimit;
 
         return $this;
     }
@@ -192,12 +214,12 @@ class Subscriptions
 
     public function getUserId(): ?User
     {
-        return $this->utilisateur;
+        return $this->owner;
     }
 
-    public function setUserId(?User $utilisateur): static
+    public function setUserId(?User $owner): static
     {
-        $this->utilisateur = $utilisateur;
+        $this->owner = $owner;
 
         return $this;
     }

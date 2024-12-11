@@ -40,4 +40,19 @@ class SubscriptionPlansRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    /**
+     * Retourne le plan par défaut.
+     *
+     * @return SubscriptionPlans|null
+     */
+    public function findDefaultPlan(): ?SubscriptionPlans
+    {
+        return $this->createQueryBuilder('sp')
+            ->andWhere('sp.is_default = :isDefault')
+            ->setParameter('isDefault', true)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
