@@ -22,9 +22,9 @@ class UserType extends AbstractType
 
             ])
             ->add('roles', ChoiceType::class, [
-                'choices' => Roles::ROLE_APPLICATION,
+                'choices' => array_flip(Roles::ROLE_APPLICATION),
                 'choice_label' => function ($choice, $key, $value) {
-                    return $value;
+                    return $key;
                 },
                 'multiple' => true,
             ])

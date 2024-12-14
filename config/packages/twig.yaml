@@ -5,6 +5,10 @@ twig:
         # Keenthemes theme layout helper class
         theme: '@App\Service\ThemeHelper'
 
+    paths:
+        # point this wherever your images live
+        '%kernel.project_dir%/assets/media/email': images
+
 when@test:
     twig:
         strict_variables: true

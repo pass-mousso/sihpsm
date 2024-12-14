@@ -2,15 +2,16 @@
 
 namespace App\Service;
 
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Address;
 
+
 class EmailService
 {
-
     public function __construct(
-        MailerInterface $mailer
+        private MailerInterface $mailer
     ){}
 
     /**
@@ -22,14 +23,18 @@ class EmailService
      * @param string|null $from Adresse email de l'expéditeur (par défaut).
      * @return void
      */
-    public function sendSimpleEmail(string $to, string $subject, string $content, string $from = null): void
+    public function sendSimpleEmail(string $to, string $subject, string $content, string $from = null, array $data = []): void
     {
-        $email = (new Email())
-            ->from($from ?? 'default@example.com')
+        $from = $from ?? 'sih@passmousso.ci';
+        $fromName = 'SIH';
+
+        $email = (new TemplatedEmail())
+            ->from(new Address($from, $fromName))
             ->to($to)
             ->subject($subject)
-            ->text(strip_tags($content))
-            ->html($content);
+            ->htmlTemplate($content)
+            ->locale('fr')
+            ->context($data);
 
         $this->mailer->send($email);
     }
@@ -76,8 +81,8 @@ class EmailService
             ->to($to)
             ->subject($subject)
             ->text(strip_tags($content))
-            ->html($content)
-            ->headers->addTextHeader('Disposition-Notification-To', $from ?? 'default@example.com');
+            ->html($content);
+//            ->headers->addTextHeader('Disposition-Notification-To', $from ?? 'default@example.com');
 
         $this->mailer->send($email);
     }

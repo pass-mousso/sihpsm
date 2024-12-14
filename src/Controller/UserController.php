@@ -7,13 +7,18 @@ use App\Entity\User;
 use App\Entity\UserHospital;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\EmailService;
 use App\Service\ThemeHelper;
+use App\Service\TransactionService;
 use App\Service\Utils;
+use App\Utils\AjaxResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use Random\RandomException;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/admin/gestion/user')]
@@ -21,9 +26,12 @@ final class UserController extends DefaultLayoutController
 {
     public function __construct(
         ThemeHelper $theme,
+        private Utils $utils,
         private EntityManagerInterface $entityManager,
         private UserRepository $userRepository,
-        private Utils $utils
+        private EmailService $emailService,
+        private UserPasswordHasherInterface $passwordHasher,
+        private TransactionService $transactionService
     )
     {
         parent::__construct($theme);
@@ -53,87 +61,71 @@ final class UserController extends DefaultLayoutController
     public function new(Request $request): Response
     {
         $redirectUrl = '/';
-        $response = [];
-        $errors = [];
-
         $currentUser = $this->getUser();
-
         $user = new User();
+
+        // Création du formulaire
         $form = $this->createForm(UserType::class, $user, [
             'action' => $this->generateUrl('admin_user_new'),
             'method' => 'POST',
         ]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted())
-        {
-            if ($form->isValid())
-            {
-                $hospital = $form->get('hospital')->getData();
-                $email = $form->get('email')->getData();
-                $plainPassword = $this->utils->generateUniqueId(length: 12, type: 'password');
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Validation du formulaire
+            $email = $form->get('email')->getData();
+            $hospital = $form->get('hospital')->getData();
+            $errors = $this->validateUserEmail($email);
 
-                $userTenant = new UserHospital();
-                $userTenant->setOwner($currentUser)
-                    ->setHospital($hospital);
-
-                if (!$this->userRepository->checkEmail($email))
-                {
-                    $errors[] = 'Cet email est déjà utilisé pour un autre utilisateur.';
-                }
-
-                $user->setPassword($plainPassword)
-                    ->setUsername($email);
-
-                // Début de la transaction
-                $this->entityManager->beginTransaction();
-
-                try {
-                    $this->entityManager->persist($userTenant);
-                    $this->entityManager->persist($user);
-                    $this->entityManager->flush();
-
-                    // Validation de la transaction
-                    $this->entityManager->commit();
-
-                    $response = [
-                       'status' => true,
-                       'message' => 'Opération effectuée avec succès',
-                       'redirectUrl' => $redirectUrl,
-                    ];
-                } catch (\Exception $e) {
-                    // Annulation de la transaction en cas d'erreur
-                    $this->entityManager->rollback();
-
-                    $errors = [
-                        'transaction' => $e->getMessage(),
-                        'errors' => $this->getErrors($form)
-                    ];
-
-                    $response = [
-                       'status' => false,
-                       'message' => 'Une erreur est survenue lors de la création du user',
-                        'errors' => $errors,
-                    ];
-                }
-            } else {
-                $response = [
-                   'status' => false,
-                   'message' => 'Une erreur est survenue lors de la création du user',
-                    'errors' => $this->getErrors($form),
-                ];
+            if (!empty($errors)) {
+                return AjaxResponse::error('Erreur de validation', $errors);
             }
+
+            // Génération des données utilisateur et liaison avec l'hôpital
+            $plainPassword = $this->utils->generateUniqueId(length: 12, type: 'password');
+            $this->prepareUser($user, $email, $plainPassword);
+
+            $userHospital = (new UserHospital())
+                ->setOwner($currentUser)
+                ->setHospital($hospital);
+
+            try {
+                // Utilisation du service de transaction
+                $this->transactionService->processTransaction([$user, $userHospital]);
+
+                // Envoi de l'email de création
+                $this->sendAccountCreationEmail($email, $plainPassword);
+
+                return AjaxResponse::success(
+                    'Opération effectuée avec succès',
+                    redirectUrl: $redirectUrl
+                );
+            } catch (\Exception $e) {
+                return AjaxResponse::error(
+                    'Une erreur est survenue lors de la création du user',
+                    ['transaction' => $e->getMessage()]
+                );
+            }
+        } elseif ($form->isSubmitted() && !$form->isValid()) {
+            // Retour d'erreur si le formulaire est invalid
+            return  AjaxResponse::error(
+                'Une erreur est survenue lors de la création du user',
+                [
+                    $this->getErrors($form)
+                ]
+            );
         }
 
-        if ($request->isXmlHttpRequest())
-        {
-            return $this->json($response);
+        // Gestion de la requête non AJAX
+        if (!$request->isXmlHttpRequest()) {
+            return $this->render('user/new.html.twig', [
+                'user' => $user,
+                'form' => $form,
+            ]);
         }
 
-        return $this->render('user/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
+        // Retour vide si la requête est en AJAX mais rien n'a été soumis
+        return AjaxResponse::error('Aucune donnée reçue.');
     }
 
     #[Route('/{id}', name: 'admin_user_show', methods: ['GET'])]
@@ -194,4 +186,30 @@ final class UserController extends DefaultLayoutController
         return $errors;
     }
 
+    private function validateUserEmail(string $email): array
+    {
+        if ($this->userRepository->checkEmail($email)) {
+            return ['Cet email est déjà utilisé pour un autre utilisateur.'];
+        }
+
+        return [];
+    }
+
+    private function prepareUser(User $user, string $email, string $password): void
+    {
+        $user->setPassword($this->passwordHasher->hashPassword($user, $password))
+            ->setUsername($email);
+    }
+
+    private function sendAccountCreationEmail(string $email, string $password): void
+    {
+        $subject = 'Création de compte SIH';
+        $template = '/emails/user_security_email.html.twig';
+        $securityData = [
+            'userEmail' => $email,
+            'password' => $password,
+        ];
+
+        $this->emailService->sendSimpleEmail(to: $email, subject: $subject, content: $template, data: $securityData);
+    }
 }

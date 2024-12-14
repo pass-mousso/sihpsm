@@ -117,7 +117,7 @@ final class HospitalController extends DefaultLayoutController
                     $entityManager->persist($hospital);
                     $entityManager->persist($userHospital);
                     $entityManager->persist($subscription);
-//                    $entityManager->flush();
+                    $entityManager->flush();
 
                     // Validation de la transaction
                     $entityManager->commit();
