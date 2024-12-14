@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit SubscriptionPlans{% endblock %}
+
+{% block body %}
+    <h1>Edit SubscriptionPlans</h1>
+
+    {{ include('subscription_plans/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_subscription_plans_index') }}">back to list</a>
+
+    {{ include('subscription_plans/_delete_form.html.twig') }}
+{% endblock %}

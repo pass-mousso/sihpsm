@@ -14,7 +14,29 @@
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
                     <!--begin::Content wrapper-->
                     <div class="d-flex flex-column flex-column-fluid">
-                        {% include "#{theme.getParameter('KT_THEME_LAYOUT_DIR')}/partials/sidebar-layout/_toolbar.html.twig" %}
+                        <!--begin::Toolbar-->
+                        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+                            <!--begin::Toolbar container-->
+                            <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack">
+                                {% block toolbar_title %}
+                                    {% include "#{theme.getParameter('KT_THEME_LAYOUT_DIR')}/partials/sidebar-layout/_page-title.html.twig" %}
+                                {% endblock %}
+                                <!--begin::Actions-->
+                                {% block toolbar_action %}
+                                    <div class="d-flex align-items-center gap-2 gap-lg-3">
+                                        <!--begin::Secondary button-->
+                                        <a href="#" class="btn btn-sm fw-bold bg-body btn-color-gray-700 btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a>
+                                        <!--end::Secondary button-->
+                                        <!--begin::Primary button-->
+                                        <a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_new_target">Add Target</a>
+                                        <!--end::Primary button-->
+                                    </div>
+                                {% endblock %}
+                                <!--end::Actions-->
+                            </div>
+                            <!--end::Toolbar container-->
+                        </div>
+                        <!--end::Toolbar-->
                         <!--begin::Content-->
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->

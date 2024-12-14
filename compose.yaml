@@ -20,7 +20,7 @@ services:
             - sih_bd_data:/var/lib/postgresql/data:rw
         networks:
             - ${NETWORKS_NAME}
-    ###< doctrine/doctrine-bundle ###
+    ###<doctrine/doctrine-bundle ###
 
     pgadmin:
         image: dpage/pgadmin4
@@ -28,6 +28,7 @@ services:
         environment:
             - PGADMIN_DEFAULT_EMAIL=admin@admin.com
             - PGADMIN_DEFAULT_PASSWORD=root
+            - SESSION_EXPIRATION_TIME=3600
         ports:
             - "8099:80"
         volumes:

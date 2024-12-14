@@ -2,3 +2,49 @@
     {{ form_widget(form) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+
+<h1>SubscriptionPlans index</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Currency</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Frequency</th>
+        <th>Is_default</th>
+        <th>Trial_days</th>
+        <th>Created_at</th>
+        <th>Updated_at</th>
+        <th>Sms_limit</th>
+        <th>actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for subscription_plan in subscription_plans %}
+        <tr>
+            <td>{{ subscription_plan.id }}</td>
+            <td>{{ subscription_plan.currency }}</td>
+            <td>{{ subscription_plan.name }}</td>
+            <td>{{ subscription_plan.price }}</td>
+            <td>{{ subscription_plan.frequency }}</td>
+            <td>{{ subscription_plan.isDefault ? 'Yes' : 'No' }}</td>
+            <td>{{ subscription_plan.trialDays }}</td>
+            <td>{{ subscription_plan.createdAt ? subscription_plan.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            <td>{{ subscription_plan.updatedAt ? subscription_plan.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            <td>{{ subscription_plan.smsLimit }}</td>
+            <td>
+                <a href="{{ path('app_subscription_plans_show', {'id': subscription_plan.id}) }}">show</a>
+                <a href="{{ path('app_subscription_plans_edit', {'id': subscription_plan.id}) }}">edit</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="11">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<a href="{{ path('app_subscription_plans_new') }}">Create new</a>

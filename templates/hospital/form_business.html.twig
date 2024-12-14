@@ -1,0 +1,84 @@
+<div data-kt-stepper-element="content">
+    <!--begin::Wrapper-->
+    <div class="w-100">
+        <!--begin::Heading-->
+        <div class="pb-10 pb-lg-12">
+            <!--begin::Title-->
+            <h2 class="fw-bold text-gray-900">Business Details</h2>
+            <!--end::Title-->
+        </div>
+        <!--end::Heading-->
+        <!--begin::Input group-->
+        <div class="fv-row mb-10">
+            <!--begin::Label-->
+            <label class="form-label required">Contact de l'entreprise</label>
+            <!--end::Label-->
+            <!--begin::Input-->
+            <input name="{{ field_name(form.business_contact) }}" class="form-control form-control-lg form-control-solid" value="{{ field_value(form.business_contact) }}" />
+            <!--end::Input-->
+        </div>
+        <div class="fv-row mb-10">
+            <!--begin::Label-->
+            <label class="form-label required">Adresse</label>
+            <!--end::Label-->
+            <!--begin::Input-->
+            <input name="{{ field_name(form.address) }}" class="form-control form-control-lg form-control-solid" value="{{ field_value(form.address) }}" />
+            <!--end::Input-->
+        </div>
+        <!--end::Input group-->
+        <!--begin::Input group-->
+        <div class="fv-row mb-10">
+            <!--begin::Label-->
+            <label class="d-flex align-items-center form-label">
+                <span class="required">Numéro Autorisation</span>
+            </label>
+            <!--end::Label-->
+            <!--begin::Input-->
+            <input name="{{ field_name(form.registrationNumber) }}" class="form-control form-control-lg form-control-solid" value="{{ field_value(form.registrationNumber) }}" />
+            <!--end::Input-->
+            <!--begin::Hint-->
+            <div class="form-text">Numéro d’enregistrement ou d’accréditation gouvernemental.</div>
+            <!--end::Hint-->
+        </div>
+        <div class="fv-row mb-10">
+            <!--begin::Label-->
+            <label class="fs-6 fw-semibold form-label required">Contact Email</label>
+            <!--end::Label-->
+            <!--begin::Input-->
+            <input name="{{ field_name(form.business_email) }}" class="form-control form-control-lg form-control-solid" value="{{ field_value(form.business_email) }}" />
+            <!--end::Input-->
+        </div>
+        <!--end::Input group-->
+        <!--begin::Input group-->
+        <div class="fv-row mb-10">
+            <!--begin::Label-->
+            <label class="form-label required">Corporation Type</label>
+            <!--end::Label-->
+            <!--begin::Input-->
+            {{ form_widget(form.type, { attr: {class:"form-select form-select-lg form-select-solid", "data-control":"select2", "data-placeholder":"Select...", "data-allow-clear":"true", "data-hide-search":"true"}}) }}
+        </div>
+        <div class="fv-row row mb-10">
+            <!--begin::Label-->
+            <div class="col-md-4 fv-row">
+                <label class="form-label required">Pays</label>
+                <!--end::Label-->
+                <!--begin::Input-->
+                {{ form_widget(form.country, { attr: {class:"form-select form-select-lg form-select-solid", "data-control":"select2", "data-placeholder":"Select...", "data-allow-clear":"true", "data-hide-search":"false"}}) }}
+            </div>
+            <div class="col-md-4 fv-row">
+                <label class="form-label required">Région</label>
+                <!--end::Label-->
+                <!--begin::Input-->
+                {{ form_widget(form.region, { attr: {class:"form-select form-select-lg form-select-solid", "data-control":"select2", "data-placeholder":"Select...", "data-allow-clear":"true", "data-hide-search":"false"}}) }}
+            </div>
+            <div class="col-md-4 select2-row">
+                <label class="form-label required">Ville</label>
+                <!--end::Label-->
+                <!--begin::Input-->
+                {{ form_widget(form.city, { attr: {class:"form-select form-select-lg form-select-solid", "data-control":"select2", "data-placeholder":"Select...", "data-allow-clear":"true", "data-hide-search":"false"}}) }}
+            </div>
+            <!--end::Input-->
+        </div>
+    </div>
+    <!--end::Wrapper-->
+</div>

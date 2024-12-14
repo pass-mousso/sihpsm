@@ -12,6 +12,7 @@ homepage:
 dashboard:
     path: /dashboard
     controller: App\Controller\DashboardController::index
+    name_prefix: admin_sih_dashboard
 
 
 signin:
