@@ -1,29 +1,48 @@
-<div class="menu">
-    {% for item in menu %}
-        <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-            <!-- Menu link -->
-            <span class="menu-link">
-                <span class="menu-icon">{{ theme.getIcon(item.icon, 'fs-2') | raw }}</span>
-                <span class="menu-title">{{ item.label }}</span>
-                <span class="menu-arrow"></span>
-            </span>
-
-            <!-- Menu sub -->
-            <div class="menu-sub menu-sub-accordion">
-                {% for subitem in item.submenus %}
-                    <div class="menu-item">
+<!--begin::Sidebar Menu-->
+<div class="app-sidebar-menu overflow-hidden flex-column-fluid">
+    <!--begin::Menu Wrapper-->
+    <div id="kt_app_sidebar_menu_wrapper" class="app-sidebar-wrapper hover-scroll-overlay-y my-5" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer" data-kt-scroll-wrappers="#kt_app_sidebar_menu" data-kt-scroll-offset="5px" data-kt-scroll-save-state="true">
+        <!--begin::Menu-->
+        <div class="menu menu-column menu-rounded menu-sub-indention px-3" id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false">
+            {% for section in menu %}
+                <!-- Start Section -->
+                <div class="menu-item pt-5">
+                    <!-- Section Title -->
+                    <div class="menu-content">
+                        <span class="menu-heading fw-bold text-uppercase fs-7">{{ section.title }}</span>
+                    </div>
+                </div>
+                <!-- Section Menus -->
+                {% for item in section.menus %}
+                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                         <!-- Menu link -->
-                        <a class="menu-link" href="{{ path(subitem.route) }}">
-                            <span class="menu-bullet">
-                                <span class="bullet bullet-dot"></span>
-                            </span>
-                            <span class="menu-title">{{ subitem.label }}</span>
-                        </a>
-                        <!-- End Menu link -->
+                        <span class="menu-link">
+                            <span class="menu-icon">{{ theme.getIcon(item.icon, 'fs-2') | raw }}</span>
+                            <span class="menu-title">{{ item.label }}</span>
+                            <span class="menu-arrow"></span>
+                        </span>
+                        <!-- Menu sub -->
+                        {% if item.submenus is defined %}
+                            <div class="menu-sub menu-sub-accordion">
+                                {% for subitem in item.submenus %}
+                                    <div class="menu-item">
+                                        <a class="menu-link" href="{{ path(subitem.route ?? '#') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">{{ subitem.label }}</span>
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
                 {% endfor %}
-            </div>
-            <!-- End Menu sub -->
+                <!-- End Section -->
+            {% endfor %}
         </div>
-    {% endfor %}
+        <!--end::Menu-->
+    </div>
+    <!--end::Menu Wrapper-->
 </div>
+<!--end::Sidebar Menu-->
