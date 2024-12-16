@@ -22,20 +22,26 @@ class Menu
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $url = null;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'menu_order', type: 'integer', nullable: true)]
     private ?int $order = null; // Permet d'ordonner les menus.
+
+    #[ORM\ManyToOne(targetEntity: Section::class, inversedBy: 'menus')]
+    private ?Section $section = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?Menu $parent = null;
 
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent', cascade: ['persist', 'remove'])]
     #[ORM\OrderBy(['order' => 'ASC'])] // Permet de classer les sous-menus par "order".
     private Collection $children;
 
     #[ORM\ManyToMany(targetEntity: AdminRole::class)]
-    #[ORM\JoinTable(name: 'menu_roles')]
+    #[ORM\JoinTable(name: 'admin_menu_roles')]
     private Collection $roles;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $icon = null;
 
     public function __construct()
     {
@@ -80,6 +86,18 @@ class Menu
     public function setOrder(?int $order): self
     {
         $this->order = $order;
+
+        return $this;
+    }
+
+    public function getSection(): ?Section
+    {
+        return $this->section;
+    }
+
+    public function setSection(?Section $section): self
+    {
+        $this->section = $section;
 
         return $this;
     }
@@ -145,6 +163,18 @@ class Menu
     public function removeRole(Role $role): self
     {
         $this->roles->removeElement($role);
+
+        return $this;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(?string $icon): static
+    {
+        $this->icon = $icon;
 
         return $this;
     }

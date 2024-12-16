@@ -14,57 +14,91 @@
  */
 
 namespace App\Service\Menu;
+use App\Entity\Menu;
+use App\Repository\SectionRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 class MenuACLService
 {
     private EntityManagerInterface $entityManager;
     private Security $security;
 
-    public function __construct(EntityManagerInterface $entityManager, Security $security)
+    public function __construct(
+        private SectionRepository $sectionRepository,
+//        private RedirectResponse $redirectResponse,
+        private UrlGeneratorInterface $urlGenerator,
+        EntityManagerInterface $entityManager,
+        Security $security
+    )
     {
         $this->entityManager = $entityManager;
         $this->security = $security;
     }
 
-    public function getMenusForCurrentUser(): array
+    /**
+     * Récupère les rôles de l'utilisateur connecté.
+     * @return string[]
+     * @throws \LogicException
+     */
+    private function getUserRoles(): array
     {
-        // Obtenez l'utilisateur connecté
         $user = $this->security->getUser();
+
         if (!$user) {
-            throw new \LogicException('Aucun utilisateur connecté.');
+            return [];
         }
 
-        // Récupérez les rôles de l'utilisateur
-        $roles = $user->getRoles();
-
-        // Récupérer les menus principaux (ceux sans parent) pour les rôles donnés
-        $menuRepository = $this->entityManager->getRepository(Menu::class);
-
-        $query = $menuRepository->createQueryBuilder('m')
-            ->leftJoin('m.roles', 'r')
-            ->leftJoin('m.children', 'c')
-            ->where('r.name IN (:roles)')
-            ->andWhere('m.parent IS NULL') // Seulement les menus principaux
-            ->setParameter('roles', $roles)
-            ->orderBy('m.order', 'ASC')
-            ->getQuery();
-
-        $menus = $query->getResult();
-
-        // Formatez les menus en tableau pour retourner une structure hiérarchique
-        return $this->formatMenus($menus);
+        return $user->getRoles();
     }
 
-    private function formatMenus(array $menus): array
+
+    /**
+     * Récupère les menus accessibles pour l'utilisateur connecté.
+     * @return array
+     */
+    public function getAccessibleMenus(): array
     {
-        $result = [];
-        foreach ($menus as $menu) {
-            $result[] = [
-                'title' => $menu->getTitle(),
-                'url' => $menu->getUrl(),
-                'children' => $this->formatMenus($menu->getChildren()->toArray()), // Récuperer les sous-menus
+        $userRoles = $this->getUserRoles();
+
+//        dd($userRoles);
+
+        // Récupère les sections et menus en base de données
+        $sections = $this->sectionRepository->findSectionsByRoles($userRoles);
+
+        // Transformer les données pour le rendu
+        return $this->formatSections($sections);
+    }
+
+    private function formatSections(array $sections): array
+    {
+        $menuStructure = [];
+        foreach ($sections as $section) {
+            $menus = [];
+            foreach ($section->getMenus() as $menu) {
+                $menus[] = [
+                    'label' => $menu->getTitle(),
+                    'route' => $menu->getUrl(),
+                    'icon' => $menu->getIcon(),
+                    'submenus' => array_map(
+                        fn($submenu) => [
+                            'label' => $submenu->getTitle(),
+                            'route' => $submenu->getUrl(),
+                        ],
+                        $menu->getChildren()->toArray()
+                    ),
+                ];
+            }
+
+            $menuStructure[] = [
+                'title' => $section->getTitle(),
+                'icon' => $section->getIcon(),
+                'menus' => $menus,
             ];
         }
 
-        return $result;
+        return $menuStructure;
     }
 }

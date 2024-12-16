@@ -14,18 +14,17 @@
  */
 
 namespace App\Twig\Menu;
-use App\Service\Menu\MenuService;
+use App\Service\Menu\MenuACLService;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 
 class MenuExtension extends AbstractExtension implements GlobalsInterface
 {
-    private MenuService $menuService;
 
-    public function __construct(MenuService $menuService)
-    {
-        $this->menuService = $menuService;
-    }
+    public function __construct(
+        private MenuACLService $menuService
+    )
+    {}
 
     /**
      * Enregistre une variable globale "_menu" disponible dans tous les templates Twig.
@@ -33,7 +32,7 @@ class MenuExtension extends AbstractExtension implements GlobalsInterface
     public function getGlobals(): array
     {
         return [
-            'menu' => $this->menuService->getMenu(),
+            '_menu' => $this->menuService->getAccessibleMenus(),
         ];
     }
 }

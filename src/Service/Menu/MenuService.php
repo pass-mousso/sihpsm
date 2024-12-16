@@ -14,6 +14,7 @@
  */
 
 namespace App\Service\Menu;
+use App\Entity\Menu;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -158,5 +159,15 @@ class MenuService
         }
 
         return $filteredMenus;
+    }
+
+    function displayMenu(Menu $menu, $level = 0)
+    {
+        $indent = str_repeat('—', $level); // On ajoute une indentation pour visualiser les niveaux
+        echo $indent . $menu->getLabel();
+
+        foreach ($menu->getChildren() as $childMenu) {
+            displayMenu($childMenu, $level + 1);
+        }
     }
 }

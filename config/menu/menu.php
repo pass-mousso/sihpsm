@@ -4,7 +4,7 @@ return [
     'sections' => [
         [
             'title' => 'GESTION DES UTILISATEURS',
-            'icon'  => 'users',
+            'icon'  => '',
             'menus' => [
                 'customer_menu' => [
                     'label' => 'Customers',
@@ -27,18 +27,18 @@ return [
             ],
         ],
         [
-            'title' => 'RAPPORTS',
-            'icon'  => 'chart-bar',
+            'title' => 'User Management',
+            'icon'  => '',
             'menus' => [
-                [
-                    'icon' => 'chart-pie',
-                    'label' => 'Statistiques',
-                    'route' => 'stats_overview',
-                ],
-                [
-                    'icon' => 'file-text',
-                    'label' => 'Rapports mensuels',
-                    'route' => 'monthly_reports',
+                'user_menu' => [
+                    'label' => 'User Management',
+                    'icon' => 'abstract-28',
+                    'route' => null,
+                    'submenus' => [
+                        ['label' => 'Gestion menu', 'route' => 'admin_menu_index'],
+                        ['label' => 'Rôles', 'route' => 'admin_role_index'],
+                        ['label' => 'Permissions', 'route' => 'admin_permission_index'],
+                    ]
                 ],
             ],
         ],
