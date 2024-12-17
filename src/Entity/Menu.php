@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: MenuRepository::class)]
 #[ORM\Table(name: 'admin_menus')]
+#[ORM\HasLifecycleCallbacks]
 class Menu
 {
     #[ORM\Id]
@@ -177,5 +178,33 @@ class Menu
         $this->icon = $icon;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setDefaultOrder(): void
+    {
+        if ($this->order === null) {
+            $orders = [];
+
+            // Si le menu a un parent, récupère les ordres des enfants de ce parent
+            if ($this->parent !== null) {
+                foreach ($this->parent->getChildren() as $child) {
+                    if ($child->getOrder() !== null) {
+                        $orders[] = $child->getOrder();
+                    }
+                }
+            }
+            // Sinon, si le menu appartient à une section, récupère les ordres des menus de la section
+            elseif ($this->section !== null) {
+                foreach ($this->section->getMenus() as $menu) {
+                    if ($menu->getOrder() !== null) {
+                        $orders[] = $menu->getOrder();
+                    }
+                }
+            }
+
+            // Si des ordres existent, définit l'ordre au maximum + 1, sinon met 1 par défaut
+            $this->order = !empty($orders) ? max($orders) + 1 : 1;
+        }
     }
 }

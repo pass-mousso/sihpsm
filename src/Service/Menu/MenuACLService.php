@@ -38,6 +38,27 @@ class MenuACLService
         $this->security = $security;
     }
 
+    public function save(Menu $menu): Menu
+    {
+        // Vérifie automatiquement `order` si non défini
+        if ($menu->getOrder() === null) {
+            $sectionMenus = $menu->getSection()?->getMenus();
+
+            if ($sectionMenus) {
+                $maxOrder = array_reduce($sectionMenus->toArray(), function (int $carry, Menu $current) {
+                    return $current->getOrder() > $carry ? $current->getOrder() : $carry;
+                }, 0);
+
+                $menu->setOrder($maxOrder + 1);
+            }
+        }
+
+        $this->entityManager->persist($menu);
+        $this->entityManager->flush();
+
+        return $menu;
+    }
+
     /**
      * Récupère les rôles de l'utilisateur connecté.
      * @return string[]

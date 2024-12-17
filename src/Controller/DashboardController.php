@@ -12,7 +12,6 @@ class DashboardController extends DefaultLayoutController
 {
     public function __construct(
         ThemeHelper $theme,
-        private MenuACLService $menuService
     )
     {
         parent::__construct($theme);
@@ -22,9 +21,6 @@ class DashboardController extends DefaultLayoutController
     {
         # Include vendors and javascript files for dashboard widgets
         $this->theme->addVendors(['amcharts', 'amcharts-maps', 'amcharts-stock']);
-
-//        $menu = $this->menuService->getAccessibleMenus();
-//        dd($menu);
 
         return $this->render('admin/pages/dashboards/index.html.twig', [
         ]);

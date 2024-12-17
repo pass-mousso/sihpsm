@@ -34,4 +34,16 @@ class SectionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findMaxSectionOrder(): ?int
+    {
+        // Requête pour retourner le plus grand `section_order`
+        $qb = $this->createQueryBuilder('s')
+            ->select('MAX(s.section_order) as max_order')
+            ->getQuery();
+
+        $result = $qb->getSingleScalarResult();
+
+        return $result !== null ? (int) $result : 0;
+    }
 }

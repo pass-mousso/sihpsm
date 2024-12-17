@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SectionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

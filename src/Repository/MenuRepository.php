@@ -32,4 +32,12 @@ class MenuRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findMenusWithoutSection()
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.section IS NULL') // Exclure les menus attribués à une section
+            ->getQuery()
+            ->getResult();
+    }
 }

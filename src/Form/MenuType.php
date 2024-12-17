@@ -49,6 +49,7 @@ class MenuType extends AbstractType
             ])
             ->add('order', IntegerType::class, [
                 'label' => 'Ordre d\'affichage',
+                'required' => false, // Optionnel pour des menus à la racine
             ])
             ->add('parent', EntityType::class, [
                 'class' => Menu::class,

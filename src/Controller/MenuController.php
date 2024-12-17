@@ -49,6 +49,7 @@ final class MenuController extends DefaultLayoutController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager->persist($menu);
             $entityManager->flush();
 
