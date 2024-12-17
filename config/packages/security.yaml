@@ -36,8 +36,9 @@ security:
     access_control:
          - { path: ^/admin, roles:
            [
-             ROLE_ADMIN,
-             ROLE_OWNER
+             'ROLE_ADMIN',
+             'ROLE_OWNER',
+             'ROLE_TENANT_ADMIN'
             ]
          }
         # - { path: ^/profile, roles: ROLE_USER }

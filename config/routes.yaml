@@ -18,6 +18,9 @@ dashboard:
 signin:
     path: /signin
     controller: App\Controller\Auth\AuthController::signin
+    defaults:
+        _is_public: true
+
 
 
 #signup:

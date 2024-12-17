@@ -42,6 +42,7 @@ parameters:
     KT_THEME_ASSETS.js: [
         "plugins/global/plugins.bundle.js",
         "js/scripts.bundle.js",
+#        "public/assets/js/menu/menu.js"
     ]
 
     # Theme Vendors
@@ -230,7 +231,4 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
 

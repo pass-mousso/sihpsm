@@ -1,0 +1,37 @@
+{% extends "#{theme.getParameter('KT_THEME_LAYOUT_DIR')}/_default.html.twig" %}
+
+{% block page_title %}AdminRole{% endblock %}
+
+{% block content %}
+    <h1>AdminRole index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for admin_role in admin_roles %}
+            <tr>
+                <td>{{ admin_role.id }}</td>
+                <td>{{ admin_role.name }}</td>
+                <td>{{ admin_role.description }}</td>
+                <td>
+                    <a href="{{ path('admin_role_show', {'id': admin_role.id}) }}">show</a>
+                    <a href="{{ path('admin_role_edit', {'id': admin_role.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin_role_new') }}">Create new</a>
+{% endblock %}
