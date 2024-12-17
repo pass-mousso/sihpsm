@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Posology{% endblock %}
+
+{% block body %}
+    <h1>Posology</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ posology.id }}</td>
+            </tr>
+            <tr>
+                <th>FrequencyPerDay</th>
+                <td>{{ posology.frequencyPerDay }}</td>
+            </tr>
+            <tr>
+                <th>Dose</th>
+                <td>{{ posology.dose }}</td>
+            </tr>
+            <tr>
+                <th>Unit</th>
+                <td>{{ posology.unit }}</td>
+            </tr>
+            <tr>
+                <th>Period</th>
+                <td>{{ posology.period }}</td>
+            </tr>
+            <tr>
+                <th>Duration</th>
+                <td>{{ posology.duration }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_posology_index') }}">back to list</a>
+
+    <a href="{{ path('app_posology_edit', {'id': posology.id}) }}">edit</a>
+
+    {{ include('posology/_delete_form.html.twig') }}
+{% endblock %}

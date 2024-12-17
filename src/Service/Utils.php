@@ -3,6 +3,8 @@
 namespace App\Service;
 
 
+use App\Enum\UnitTypeEnum;
+use App\Enum\UnitTypeEnumEnum;
 use Random\RandomException;
 use Symfony\Component\Validator\Exception\InvalidOptionsException;
 
@@ -50,6 +52,29 @@ class Utils
         }
 
         return $uniqueId;
+    }
+
+    function getReadableUnit(UnitTypeEnum $unitType): string
+    {
+        return match ($unitType) {
+            UnitTypeEnum::MILLIGRAM => 'Milligramme',
+            UnitTypeEnum::MICROGRAM => 'Microgramme',
+            UnitTypeEnum::GRAM => 'Gramme',
+            UnitTypeEnum::MILLILITER => 'Millilitre',
+            UnitTypeEnum::INTERNATIONAL_UNIT => 'Unité internationale',
+            UnitTypeEnum::PILL => 'Comprimé',
+            UnitTypeEnum::CAPSULE => 'Gélule',
+            UnitTypeEnum::TEASPOON => 'Cuillère à café',
+            UnitTypeEnum::TABLESPOON => 'Cuillère à soupe',
+            UnitTypeEnum::DROP => 'Goutte',
+            UnitTypeEnum::SPRAY => 'Spray',
+            UnitTypeEnum::PATCH => 'Patch',
+            UnitTypeEnum::INHALER => 'Inhalateur',
+            UnitTypeEnum::SUPPOSITORY => 'Suppositoire',
+            UnitTypeEnum::AMPULE => 'Ampoule',
+            UnitTypeEnum::BOTTLE => 'Flacon',
+            UnitTypeEnum::SYRINGE => 'Seringue',
+        };
     }
 
 }

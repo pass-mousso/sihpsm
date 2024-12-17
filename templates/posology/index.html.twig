@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Posology index{% endblock %}
+
+{% block body %}
+    <h1>Posology index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>FrequencyPerDay</th>
+                <th>Dose</th>
+                <th>Unit</th>
+                <th>Period</th>
+                <th>Duration</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for posology in posologies %}
+            <tr>
+                <td>{{ posology.id }}</td>
+                <td>{{ posology.frequencyPerDay }}</td>
+                <td>{{ posology.dose }}</td>
+                <td>{{ posology.unit }}</td>
+                <td>{{ posology.period }}</td>
+                <td>{{ posology.duration }}</td>
+                <td>
+                    <a href="{{ path('app_posology_show', {'id': posology.id}) }}">show</a>
+                    <a href="{{ path('app_posology_edit', {'id': posology.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_posology_new') }}">Create new</a>
+{% endblock %}

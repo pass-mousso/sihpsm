@@ -46,7 +46,7 @@ class Hospital
 
     #[ORM\ManyToOne(inversedBy: 'hopitals')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?HopitalFacility $type = null;
+    private ?HospitalFacility $type = null;
 
     #[ORM\Column(length: 255)]
     private ?string $address = null;
@@ -121,12 +121,20 @@ class Hospital
     #[ORM\Column(length: 10)]
     private ?string $tenantIdentifier = null;
 
+    #[ORM\OneToMany(targetEntity: Vaccine::class, mappedBy: 'hopital', cascade: ['persist', 'remove'])]
+    private Collection $vaccines;
+
+    #[ORM\ManyToMany(targetEntity: Patient::class, mappedBy: 'hospitals')]
+    private Collection $patients; // Liste des patients associés à cet hôpital
+
     public function __construct()
     {
         $this->hospitalPhoneNumbers = new ArrayCollection();
         $this->hospitalEmails = new ArrayCollection();
         $this->hospitalManagers = new ArrayCollection();
+        $this->vaccines = new ArrayCollection();
         $this->hospitalStaff = new ArrayCollection();
+        $this->patients = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
     }
@@ -160,12 +168,12 @@ class Hospital
         return $this;
     }
 
-    public function getType(): ?HopitalFacility
+    public function getType(): ?HospitalFacility
     {
         return $this->type;
     }
 
-    public function setType(?HopitalFacility $type): static
+    public function setType(?HospitalFacility $type): static
     {
         $this->type = $type;
 
@@ -468,6 +476,60 @@ class Hospital
     public function setTenantIdentifier(string $tenantIdentifier): static
     {
         $this->tenantIdentifier = $tenantIdentifier;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vaccine>
+     */
+    public function getVaccines(): Collection
+    {
+        return $this->vaccines;
+    }
+
+    public function addVaccine(Vaccine $vaccine): static
+    {
+        if (!$this->vaccines->contains($vaccine)) {
+            $this->vaccines->add($vaccine);
+            $vaccine->setHospital($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVaccine(Vaccine $vaccine): static
+    {
+        if ($this->vaccines->removeElement($vaccine)) {
+            if ($vaccine->getHospital() === $this) {
+                $vaccine->setHospital(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPatients(): Collection
+    {
+        return $this->patients;
+    }
+
+    public function addPatient(Patient $patient): self
+    {
+        if (!$this->patients->contains($patient)) {
+            $this->patients->add($patient);
+            $patient->addHospital($this);
+        }
+
+        return $this;
+    }
+
+    public function removePatient(Patient $patient): self
+    {
+        if ($this->patients->contains($patient)) {
+            $this->patients->removeElement($patient);
+            $patient->removeHospital($this);
+        }
 
         return $this;
     }

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Posology{% endblock %}
+
+{% block body %}
+    <h1>Edit Posology</h1>
+
+    {{ include('posology/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_posology_index') }}">back to list</a>
+
+    {{ include('posology/_delete_form.html.twig') }}
+{% endblock %}

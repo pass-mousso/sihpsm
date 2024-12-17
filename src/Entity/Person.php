@@ -7,6 +7,15 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PersonRepository::class)]
+#[ORM\InheritanceType('JOINED')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap([
+    'person' => Person::class,
+    'patient' => Patient::class,
+    'doctor' => Doctor::class,
+    'nurse' => Nurse::class,
+    'hospital_staff' => HospitalStaff::class,
+])]
 class Person
 {
     #[ORM\Id]
@@ -15,13 +24,13 @@ class Person
     private ?int $id = null;
 
     #[ORM\Column(length: 150)]
-    private ?string $firt_name = null;
+    private ?string $firstName = null;
 
     #[ORM\Column(length: 200)]
-    private ?string $last_name = null;
+    private ?string $lastName = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $birth_date = null;
+    private ?\DateTimeInterface $birthDate = null;
 
     #[ORM\Column(length: 1)]
     private ?string $gender = null;
@@ -30,43 +39,46 @@ class Person
     #[ORM\JoinColumn(nullable: false)]
     private ?User $users = null;
 
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    private ?string $maritalStatus = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getFirtName(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->firt_name;
+        return $this->firstName;
     }
 
-    public function setFirtName(string $firt_name): static
+    public function setFirstName(string $firstName): static
     {
-        $this->firt_name = $firt_name;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
     public function getLastName(): ?string
     {
-        return $this->last_name;
+        return $this->lastName;
     }
 
-    public function setLastName(string $last_name): static
+    public function setLastName(string $lastName): static
     {
-        $this->last_name = $last_name;
+        $this->lastName = $lastName;
 
         return $this;
     }
 
     public function getBirthDate(): ?\DateTimeInterface
     {
-        return $this->birth_date;
+        return $this->birthDate;
     }
 
-    public function setBirthDate(\DateTimeInterface $birth_date): static
+    public function setBirthDate(\DateTimeInterface $birthDate): static
     {
-        $this->birth_date = $birth_date;
+        $this->birthDate = $birthDate;
 
         return $this;
     }
@@ -91,6 +103,18 @@ class Person
     public function setUsers(User $users): static
     {
         $this->users = $users;
+
+        return $this;
+    }
+
+    public function getMaritalStatus(): ?string
+    {
+        return $this->maritalStatus;
+    }
+
+    public function setMaritalStatus(?string $maritalStatus): static
+    {
+        $this->maritalStatus = $maritalStatus;
 
         return $this;
     }
