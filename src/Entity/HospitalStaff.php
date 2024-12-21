@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\HospitalStaffRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: HospitalStaffRepository::class)]
@@ -13,17 +14,17 @@ class HospitalStaff
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $staffCount = null;
 
     #[ORM\ManyToOne(inversedBy: 'hospitalStaff')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Hospital $hospital = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $doctorsCount = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $nursesCount = null;
 
     public function getId(): ?int

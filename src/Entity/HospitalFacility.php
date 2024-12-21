@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\HopitalFacilityRepository;
+use App\Repository\HopsitalFacilityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: HopitalFacilityRepository::class)]
-class HopitalFacility
+#[ORM\Entity(repositoryClass: HopsitalFacilityRepository::class)]
+class HospitalFacility
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -31,7 +31,7 @@ class HopitalFacility
     /**
      * @var Collection<int, Hospital>
      */
-    #[ORM\OneToMany(targetEntity: Hospital::class, mappedBy: 'type')]
+    #[ORM\OneToMany(targetEntity: Hospital::class, mappedBy: 'type', cascade: [])]
     private Collection $hopitals;
 
     public function __construct()

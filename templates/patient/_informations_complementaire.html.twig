@@ -1,0 +1,88 @@
+<div class="col-lg-6">
+    <div class="row mb-6">
+        <!--begin::Label-->
+        <label class="col-lg-4 col-form-label fw-bold fs-6">
+            <span class="">Statut Drépano</span>
+            <i class="fas fa-exclamation-circle ms-1 fs-7"></i>
+        </label>
+        <!--end::Label-->
+        <!--begin::Col-->
+        <div class="col-lg-8 fv-row">
+            {{form_widget(form.resultatDepranocite, { attr: {'aria-label':"Select a Country" , 'data-control':"select2",
+                class:'form-control form-control-lg form-control-solid mb-3 mb-lg-0','data-placeholder':"Selectionnez votre statut ..." }})
+            }}
+        </div>
+        <!--end::Col-->
+    </div>
+    <div class="row mb-6">
+        <!--begin::Label-->
+        <label class="col-lg-4 col-form-label fw-bold fs-6">Status test</label>
+        <!--end::Label-->
+        <!--begin::Col-->
+        <div class="col-lg-8 fv-row">
+            {{form_widget(form.statutTestDepranocite, { attr: {
+                'aria-label':"Select a Country" ,
+                'data-control':"select2",
+                class:'form-control form-control-lg form-control-solid mb-3 mb-lg-0',
+                'data-placeholder':"Selectionnez votre régime alimentaire..." }})
+            }}
+        </div>
+        <!--end::Col-->
+    </div>
+</div>
+<div class="col-lg-6">
+    <div class="row mb-6">
+        <!--begin::Label-->
+        <label class="col-lg-4 col-form-label fw-bold fs-6">
+            <span class="">Groupe sanguin</span>
+            <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip" title="Vous devrez attester avec un fichier à telecharger !">
+            </i>
+        </label>
+        <!--end::Label-->
+        <!--begin::Col-->
+        <div class="col-lg-8 fv-row">
+            {{form_widget(form.bloodGroup, { attr: {'aria-label':"Select a Country" , 'data-control':"select2", class:'form-control form-control-lg form-control-solid mb-3 mb-lg-0','data-placeholder':"Selectionnez votre groupe sanguin..." }}) }}
+        </div>
+        <!--end::Col-->
+    </div>
+    <div class="row mb-6">
+        <!--begin::Label-->
+        <label class="col-lg-4 col-form-label fw-bold fs-6">Régime alimenataire</label>
+        <!--end::Label-->
+        <!--begin::Col-->
+        <div class="col-lg-8 fv-row">
+            {{form_widget(form.regime, { attr: {'aria-label':"Select a Country" , 'data-control':"select2", class:'form-control form-control-lg form-control-solid mb-3 mb-lg-0','data-placeholder':"Selectionnez votre régime alimentaire..." }})
+            }}
+        </div>
+        <!--end::Col-->
+    </div>
+</div>
+<div class="col-lg-12">
+    {% if form.hospitals is defined %}
+        <div class="row mb-6">
+            <!--begin::Label-->
+            <label class="col-lg-4 col-form-label fw-bold fs-6">
+                <span class="">Hôpital de soins</span>
+            </label>
+            <div class="col-lg-8 fv-row">
+                {{form_widget(form.hospitals, { attr: {'aria-label':"Selectionnez vos centre médicaux" , 'data-control':"select2", class:'form-control form-control-lg form-control-solid mb-3 mb-lg-0','data-placeholder':"Selectionnez vos centre médicaux..." }})
+                }}
+            </div>
+        </div>
+    {% endif %}
+    <div class="row mb-6">
+        <!--begin::Label-->
+        <label class="col-lg-4 col-form-label fw-bold fs-6">
+            <span class="">Médecins Traitant connecté au PSM</span>
+            {# <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip" title="Country of origination">
+            </i> #}
+        </label>
+        <!--end::Label-->
+        <!--begin::Col-->
+        <div class="col-lg-8 fv-row">
+            {{form_widget(form.doctor, { attr: {'aria-label':"Selectionnez vos centre médicaux" , 'data-control':"select2", class:'form-control form-control-lg form-control-solid mb-3 mb-lg-0','data-placeholder':"Selectionnez vos médecins traitants..." }})
+            }}
+        </div>
+        <!--end::Col-->
+    </div>
+</div>

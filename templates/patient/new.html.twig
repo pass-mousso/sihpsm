@@ -1,0 +1,202 @@
+{% extends "#{theme.getParameter('KT_THEME_LAYOUT_DIR')}/_default.html.twig" %}
+
+{% block css %}
+    <style>
+        .barre-right {
+            border-right: 3px solid #2f18ef;
+            border-right-style: dashed;
+        }
+
+        .patient-collapse {
+            background: #1d741fad !important;
+            color: #fff;
+        }
+
+        .patient-collapse h4 {
+            color: #fff;
+        }
+    </style>
+{% endblock %}
+
+{% block page_title %}New Patient{% endblock %}
+
+{% block content %}
+    <div class="card mb-5 mb-xl-10">
+        <!--begin::Card header-->
+        <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_profile_details" aria-expanded="true" aria-controls="kt_account_profile_details">
+            <!--begin::Card title-->
+            <div class="card-title m-0">
+                <h3 class="fw-bolder m-0">Création Compte Sante Medicale (CSM)</h3>
+            </div>
+            <!--end::Card title-->
+        </div>
+        <!--begin::Card header-->
+        <!--begin::Content-->
+        <div id="kt_account_settings_profile_details" class="collapse show">
+            <!--begin::Form-->
+            {{ form_start(form, { attr: { 'class':'form', 'id':'kt_account_patient_new_profile_form'}} ) }}
+            <div class="card-body border-top p-9">
+                <!--begin::Input group-->
+                <div class="row mb-6">
+                    <!--begin::Label-->
+                    {# <label class="col-lg-4 col-form-label fw-bold fs-6">Avatar</label> #}
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-12 text-center">
+                        <!--begin::Image input-->
+                        <!--begin::Image input-->
+                        <div class="image-input image-input-circle" data-kt-image-input="true" style="background-image: url('/assets/media/svg/avatars/blank.svg')">
+                            <!--begin::Image preview wrapper-->
+                            <div class="image-input-wrapper w-125px h-125px" style="background-image: url('/assets/media/svg/avatars/blank.svg')">
+                            </div>
+                            <!--end::Image preview wrapper-->
+
+                            <!--begin::Edit button-->
+                            <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                   data-kt-image-input-action="change"
+                                   data-bs-toggle="tooltip"
+                                   data-bs-dismiss="click"
+                                   title="Change avatar">
+                                <i class="bi bi-pencil-fill fs-7"></i>
+                                <!--begin::Inputs-->
+                                {{ form_row(form.imageProfile, { attr:{name:"avatar", accept:".png, .jpg, .jpeg"}})}}
+                                <input type="hidden" name="avatar_remove" />
+                                <!--end::Inputs-->
+                            </label>
+                            <!--end::Edit button-->
+
+                            <!--begin::Cancel button-->
+                            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                  data-kt-image-input-action="cancel"
+                                  data-bs-toggle="tooltip"
+                                  data-bs-dismiss="click"
+                                  title="Cancel avatar">
+                                <i class="bi bi-x fs-2"></i>
+                            </span>
+                            <!--end::Cancel button-->
+
+                            <!--begin::Remove button-->
+                            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                  data-kt-image-input-action="remove"
+                                  data-bs-toggle="tooltip"
+                                  data-bs-dismiss="click"
+                                  title="Remove avatar">
+                                <i class="bi bi-x fs-2"></i>
+                            </span>
+                            <!--end::Remove button-->
+                        </div>
+                        <!--end::Image input-->
+                        <!--end::Image input-->
+                        <!--begin::Hint-->
+                        <div class="form-text">Types de fichiers autorisés: png, jpg, jpeg.</div>
+                        <!--end::Hint-->
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!-- <div class="separator separator-dashed border-3 my-10 border-success"></div> -->
+                <div class="row">
+                    <div class="col-lg-6 barre-right">
+                        {{ include('patient/_form_information_personnelle.html.twig') }}
+                    </div>
+                    <div class="col-lg-6">
+                        {{ include('/patient/_form_adresse.html.twig') }}
+                    </div>
+                </div>
+                <div class="row mt-10">
+                    <div class="col-lg-12">
+                        <div class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6 mb-6">
+                            <!--begin::Icon-->
+                            <!--begin::Svg Icon | path: icons/duotune/general/gen048.svg-->
+                            <span class="svg-icon svg-icon-2tx svg-icon-primary me-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path opacity="0.3" d="M20.5543 4.37824L12.1798 2.02473C12.0626 1.99176 11.9376 1.99176 11.8203 2.02473L3.44572 4.37824C3.18118 4.45258 3 4.6807 3 4.93945V13.569C3 14.6914 3.48509 15.8404 4.4417 16.984C5.17231 17.8575 6.18314 18.7345 7.446 19.5909C9.56752 21.0295 11.6566 21.912 11.7445 21.9488C11.8258 21.9829 11.9129 22 12.0001 22C12.0872 22 12.1744 21.983 12.2557 21.9488C12.3435 21.912 14.4326 21.0295 16.5541 19.5909C17.8169 18.7345 18.8277 17.8575 19.5584 16.984C20.515 15.8404 21 14.6914 21 13.569V4.93945C21 4.6807 20.8189 4.45258 20.5543 4.37824Z" fill="black" />
+                                <path d="M10.5606 11.3042L9.57283 10.3018C9.28174 10.0065 8.80522 10.0065 8.51412 10.3018C8.22897 10.5912 8.22897 11.0559 8.51412 11.3452L10.4182 13.2773C10.8099 13.6747 11.451 13.6747 11.8427 13.2773L15.4859 9.58051C15.771 9.29117 15.771 8.82648 15.4859 8.53714C15.1948 8.24176 14.7183 8.24176 14.4272 8.53714L11.7002 11.3042C11.3869 11.6221 10.874 11.6221 10.5606 11.3042Z" fill="black" />
+                                </svg>
+                            </span>
+                            <!--end::Svg Icon-->
+                            <!--end::Icon-->
+                            <!--begin::Wrapper-->
+                            <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
+                                <!--begin::Content-->
+                                <div class="mb-3 mb-md-0 fw-bold">
+                                    <h4 class="text-gray-900 fw-bolder">Information Complémentaire</h4>
+                                </div>
+                            </div>
+                            <!--end::Wrapper-->
+                        </div>
+                    </div>
+                    {{ include('/patient/_informations_complementaire.html.twig') }}
+                </div>
+
+{#                <div class="separator separator-dashed border-2 my-10 border-success"></div>#}
+
+{#                {{ include('/hopital/patient/_add_patient_attribut.html.twig') }}#}
+
+{#                <div class="separator separator-dashed border-2 my-10 border-success"></div>#}
+
+{#                <div class="row">#}
+{#                    {{ include('/hopital/patient/_add_personne_a_contacter.html.twig') }}#}
+{#                </div>#}
+
+{#                <div class="separator separator-dashed border-2 my-10 border-success"></div>#}
+
+{#                <div class="row">#}
+{#                    {{ include('/hopital/patient/_add_compte_associe.html.twig') }}#}
+{#                </div>#}
+
+{#                <div class="separator separator-dashed border-2 my-10 border-success"></div>#}
+
+{#                <div class="row">#}
+{#                    {{ include('/hopital/patient/_add_affections.html.twig') }}#}
+{#                </div>#}
+
+{#                <div class="separator separator-dashed border-2 my-10 border-success"></div>#}
+
+{#                <div class="row">#}
+{#                    {{ include('/hopital/patient/_add_allergies_patient.html.twig') }}#}
+{#                </div>#}
+
+{#                <div class="separator separator-dashed border-2 my-10 border-success"></div>#}
+
+{#                <div class="row">#}
+{#                    {{ include('/hopital/patient/_add_patient_traitement.html.twig') }}#}
+{#                </div>#}
+
+{#                <div class="separator separator-dashed border-2 my-10 border-success"></div>#}
+
+{#                <div class="row">#}
+{#                    {{ include('/hopital/patient/_add_patient_assurance.html.twig') }}#}
+{#                </div>#}
+
+{#                <div class="separator separator-dashed border-2 my-10 border-success"></div>#}
+
+{#                <div class="row">#}
+{#                    {{ include('/hopital/patient/_add_patient_vaccin.html.twig') }}#}
+{#                </div>#}
+            </div>
+            <!--end::Card body-->
+            <!--begin::Actions-->
+            <div class="card-footer d-flex justify-content-end py-6 px-9">
+                <div class="col-md-8">
+                    <label class="required form-check form-check-custom form-check-solid align-items-start">
+                        <!--begin::Input-->
+                        <input class="form-check-input me-3" type="checkbox"
+                               name="{{ field_name(form.agreeTerms) }}"
+                               value="{{ field_value(form.agreeTerms) }}">
+                        <!--end::Input-->
+                        <!--begin::Label-->
+                        <span class="form-check-label d-flex flex-column align-items-start">
+                            <span class="text-muted fs-6">En cliquant, vous donnez l'autorisation à PASS SANTE de rendre vos informations publiques.</span>
+                        </span>
+                        <!--end::Label-->
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary" id="kt_account_patient_new_submitt">
+                    Validez-vous ce compte CSM ?
+                </button>
+            </div>
+            {{ form_end(form)}}
+        </div>
+        <!--end::Content-->
+    </div>
+{% endblock %}

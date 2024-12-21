@@ -10,7 +10,7 @@ trait TimestampTableTrait
     private \DateTimeInterface $createdAt;
 
     #[ORM\Column(type: 'datetime')]
-    private \DateTimeInterface $updatedAt;
+    private \DateTime $updatedAt;
 
     public function getCreatedAt(): \DateTimeInterface
     {
@@ -22,12 +22,12 @@ trait TimestampTableTrait
         $this->createdAt = $createdAt;
     }
 
-    public function getUpdatedAt(): \DateTimeInterface
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
+    public function setUpdatedAt(\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }

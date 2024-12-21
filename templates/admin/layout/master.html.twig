@@ -3,7 +3,7 @@
 <!--begin::Head-->
 <head>
     <base href=""/>
-    <title>{% block page_title %}{% endblock %} - Keenthemes</title>
+    <title>{% block page_title %}{% endblock %} - SIH</title>
     <meta charset="utf-8"/>
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
@@ -43,6 +43,9 @@
 
     {% endblock %}
 
+    {% block css %}
+    {% endblock %}
+
 </head>
 <!--end::Head-->
 
@@ -62,6 +65,8 @@
     {% for path in theme.getGlobalAssets() %}
     <script src="{{ theme.asset(path) }}"></script>
     {% endfor %}
+    <script src="{{ asset('/bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     <!--end::Global Javascript Bundle-->
 
     <!--begin::Vendors Javascript(used by this page)-->

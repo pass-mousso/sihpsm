@@ -6,6 +6,7 @@ use App\Enum\BloodGroup;
 use App\Enum\ResultatDepranocite;
 use App\Enum\StatutTestDepranocite;
 use App\Repository\PatientRepository;
+use App\Traits\Table\TimestampTableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class Patient extends Person
 {
+    use TimestampTableTrait;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\Blank]
@@ -53,10 +55,6 @@ class Patient extends Person
     private ?string $resultatDepranocite = null;
 
     #[ORM\Column(type: 'string', length: 20, nullable: false)]
-    #[Assert\Choice(
-        choices: StatutTestDepranocite::VALUES,
-        message: 'Invalid test status for drépanocytose.'
-    )]
     private ?string $statutTestDepranocite = null;
 
     #[ORM\OneToMany(targetEntity: PatientAffections::class, mappedBy: 'patient', cascade: ['persist', 'remove'])]
@@ -100,6 +98,12 @@ class Patient extends Person
     )]
     private Collection $hospitals; // Liste des hôpitaux associés au patient
 
+    /**
+     * Le carnet médical associé à ce patient.
+     */
+    #[ORM\OneToOne(targetEntity: MedicalRecord::class, mappedBy: 'patient', cascade: ['persist', 'remove'])]
+    private ?MedicalRecord $medicalRecord = null;
+
     public function __construct()
     {
         $this->affections = new ArrayCollection();
@@ -109,6 +113,9 @@ class Patient extends Person
         $this->traitements = new ArrayCollection();
         $this->insurances = new ArrayCollection();
         $this->hospitals = new ArrayCollection();
+        $this->registrationDate = new \DateTime();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTime();
     }
 
     public function getMedicalRecordNumber(): ?string
@@ -215,19 +222,18 @@ class Patient extends Person
         return $this;
     }
 
-    public function getStatutTestDepranocite(): ?string
+    public function getStatutTestDepranocite(): StatutTestDepranocite
     {
-        return $this->statutTestDepranocite;
-    }
-
-    public function setStatutTestDepranocite(string $statutTestDepranocite): static
-    {
-        if (!in_array($statutTestDepranocite, StatutTestDepranocite::VALUES, true)) {
-            throw new \InvalidArgumentException('Invalid test status for drépanocytose.');
+        if (null === $this->statutTestDepranocite) {
+            return StatutTestDepranocite::NOT_TESTED;
         }
 
-        $this->statutTestDepranocite = $statutTestDepranocite;
+        return StatutTestDepranocite::from($this->statutTestDepranocite);
+    }
 
+    public function setStatutTestDepranocite(StatutTestDepranocite $statutTestDepranocite): self
+    {
+        $this->statutTestDepranocite = $statutTestDepranocite?->name;
         return $this;
     }
 
@@ -430,6 +436,36 @@ class Patient extends Person
         }
 
         return $this;
+    }
+
+    public function getMedicalRecord(): ?MedicalRecord
+    {
+        return $this->medicalRecord;
+    }
+
+    public function setMedicalRecord(MedicalRecord $medicalRecord): self
+    {
+        // Définir le propriétaire de l'association côté MedicalRecord.
+        if ($medicalRecord->getPatient() !== $this) {
+            $medicalRecord->setPatient($this);
+        }
+
+        $this->medicalRecord = $medicalRecord;
+
+        return $this;
+    }
+
+
+    /**
+     * Calculer l'âge du patient en fonction de sa date de naissance.
+     *
+     * @return int L'âge calculé en années.
+     */
+    public function getAge(): int
+    {
+        $birthDate = $this->getBirthDate();
+        $today = new \DateTime();
+        return $today->diff($birthDate)->y;
     }
 
 }

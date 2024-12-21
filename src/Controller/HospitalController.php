@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Controller\Bootstrap\DefaultLayoutController;
 use App\Entity\Hospital;
+use App\Entity\HospitalConfiguration;
 use App\Entity\Subscriptions;
 use App\Entity\UserHospital;
 use App\Form\HospitalType;
@@ -32,9 +33,9 @@ final class HospitalController extends DefaultLayoutController
     }
 
     #[Route(name: 'admin_hospital_index', methods: ['GET'])]
-    public function index(HospitalRepository $hospitalRepository): Response
+    public function index(): Response
     {
-        $hospitals = $hospitalRepository->findAll();
+        $hospitals = $this->hospitalRepository->findAll();
 
         return $this->render('hospital/index.html.twig', [
             'hospitals' => $hospitals,
@@ -44,6 +45,8 @@ final class HospitalController extends DefaultLayoutController
     #[Route('/new', name: 'admin_hospital_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $this->theme->addJavascriptFile('js/hospital/create-hospital-account.js');
+
         $currentUser = $this->getUser();
         $currentDate = new \DateTimeImmutable();
         $params = [];
@@ -52,7 +55,6 @@ final class HospitalController extends DefaultLayoutController
         $redirectRoute = 'admin_hospital_index';
         $redirectUrl = $this->redirectToRoute($redirectRoute, $params);
 
-        $this->theme->addJavascriptFile('js/hospital/create-account.js');
 
         $hospital = new Hospital();
         $form = $this->createForm(HospitalType::class, $hospital,[
@@ -72,10 +74,10 @@ final class HospitalController extends DefaultLayoutController
                 $userHospital = new UserHospital();
                 $userHospital->setOwner($currentUser)
                     ->setHospital($hospital)
-                    ->setLastLoginAt($currentDate)
-                    ->setCreatedAt($currentDate)
-                    ->setUpdatedAt($currentDate)
                 ;
+
+                $configHospital = new HospitalConfiguration();
+                $configHospital->setHospital($hospital);
 
                 $subscriptionPlan = $this->subscriptionPlansRepository->findDefaultPlan();
 
@@ -106,18 +108,17 @@ final class HospitalController extends DefaultLayoutController
                     ->setStartsAt(new \DateTimeImmutable())
                     ->setEndsAt($endDate)
                     ->setTrialEndsAt($endDate)
-                    ->setCreatedAt(new \DateTimeImmutable())
-                    ->setUpdatedAt(new \DateTimeImmutable())
                 ;
 
                 // Début de la transaction
                 $entityManager->beginTransaction();
 
                 try {
-                    $entityManager->persist($hospital);
-                    $entityManager->persist($userHospital);
-                    $entityManager->persist($subscription);
-                    $entityManager->flush();
+                    $this->entityManager->persist($hospital);
+                    $this->entityManager->persist($userHospital);
+                    $this->entityManager->persist($configHospital);
+                    $this->entityManager->persist($subscription);
+                    $this->entityManager->flush();
 
                     // Validation de la transaction
                     $entityManager->commit();
@@ -148,46 +149,46 @@ final class HospitalController extends DefaultLayoutController
         }
 
 
-        return $this->render('hopital/new.html.twig', [
+        return $this->render('hospital/new.html.twig', [
             'hospital' => $hospital,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'admin_hopital_show', methods: ['GET'])]
-    public function show(Hospital $hopital): Response
+    #[Route('/{id}', name: 'admin_hospital_show', methods: ['GET'])]
+    public function show(Hospital $hospital): Response
     {
-        return $this->render('hopital/show.html.twig', [
-            'hospital' => $hopital,
+        return $this->render('hospital/show.html.twig', [
+            'hospital' => $hospital,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_hopital_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Hospital $hopital, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/edit', name: 'admin_hospital_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Hospital $hospital, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(HopitalType::class, $hopital);
+        $form = $this->createForm(HopitalType::class, $hospital);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_hopital_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_hospital_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('hopital/edit.html.twig', [
-            'hospital' => $hopital,
+        return $this->render('hospital/edit.html.twig', [
+            'hospital' => $hospital,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_hopital_delete', methods: ['POST'])]
-    public function delete(Request $request, Hospital $hopital, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}', name: 'admin_hospital_delete', methods: ['POST'])]
+    public function delete(Request $request, Hospital $hospital, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$hopital->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($hopital);
+        if ($this->isCsrfTokenValid('delete'.$hospital->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($hospital);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_hopital_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('admin_hospital_index', [], Response::HTTP_SEE_OTHER);
     }
 }

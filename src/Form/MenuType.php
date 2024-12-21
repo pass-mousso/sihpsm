@@ -61,7 +61,8 @@ class MenuType extends AbstractType
                 'class' => AdminRole::class,
                 'choice_label' => 'description',
                 'multiple' => true,
-                'placeholder' => 'Choisissez les rôles'
+                'placeholder' => 'Choisissez les rôles',
+                'required' => false,
             ])
             ->add('icon', TextType::class, [
                 'label' => 'Icône',

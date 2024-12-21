@@ -40,12 +40,7 @@ class DefaultLayoutController extends AbstractController
         $this->theme->addVendors(['datatables', 'fullcalendar']);
 
         # Include global javascript files
-        $this->theme->addJavascriptFile('js/widgets.bundle.js');
-        $this->theme->addJavascriptFile('js/custom/apps/chat/chat.js');
-        $this->theme->addJavascriptFile('js/custom/utilities/modals/upgrade-plan.js');
-        $this->theme->addJavascriptFile('js/custom/utilities/modals/create-app.js');
-        $this->theme->addJavascriptFile('js/custom/utilities/modals/users-search.js');
-        $this->theme->addJavascriptFile('js/custom/utilities/modals/new-target.js');
+//        $this->theme->addJavascriptFile('js/widgets.bundle.js');
     }
 
     public function initDarkSidebarLayout()

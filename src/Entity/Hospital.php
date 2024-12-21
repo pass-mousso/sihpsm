@@ -45,7 +45,7 @@ class Hospital
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'hopitals')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: "RESTRICT")]
     private ?HospitalFacility $type = null;
 
     #[ORM\Column(length: 255)]
@@ -121,7 +121,7 @@ class Hospital
     #[ORM\Column(length: 10)]
     private ?string $tenantIdentifier = null;
 
-    #[ORM\OneToMany(targetEntity: Vaccine::class, mappedBy: 'hopital', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: Vaccine::class, mappedBy: 'hospital', cascade: ['persist', 'remove'])]
     private Collection $vaccines;
 
     #[ORM\ManyToMany(targetEntity: Patient::class, mappedBy: 'hospitals')]

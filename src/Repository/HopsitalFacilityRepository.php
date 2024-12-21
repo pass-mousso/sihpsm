@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\HopitalFacility;
+use App\Entity\HospitalFacility;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<HopitalFacility>
+ * @extends ServiceEntityRepository<HospitalFacility>
  */
-class HopitalFacilityRepository extends ServiceEntityRepository
+class HopsitalFacilityRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, HopitalFacility::class);
+        parent::__construct($registry, HospitalFacility::class);
     }
 
     //    /**
-    //     * @return HopitalFacility[] Returns an array of HopitalFacility objects
+    //     * @return HospitalFacility[] Returns an array of HospitalFacility objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class HopitalFacilityRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?HopitalFacility
+    //    public function findOneBySomeField($value): ?HospitalFacility
     //    {
     //        return $this->createQueryBuilder('h')
     //            ->andWhere('h.exampleField = :val')

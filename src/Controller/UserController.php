@@ -40,7 +40,7 @@ final class UserController extends DefaultLayoutController
     #[Route(name: 'admin_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
-        $this->theme->addJavascriptFile('/js/admin/user/add.js');
+        $this->theme->addJavascriptFile('js/admin/user/add.js');
 
         $user = new User();
         $form = $this->createForm(UserType::class, $user, [

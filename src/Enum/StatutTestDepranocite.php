@@ -1,25 +1,31 @@
 <?php
 
-/**
- * Class StatutTestDepranocite
- *
- * This service handles subscription-related checks, such as determining whether
- * a user has an active subscription and retrieving the current subscription.
- *
- * @package App\Enum
- * @author Jean Mermoz Effi
- * @email jeanmermozeffi@gmail.com
- * @version 1.0
- * @created 17/12/2024
- */
-
 namespace App\Enum;
-class StatutTestDepranocite
+
+/**
+ * Enum StatutTestDepranocite
+ *
+ * Représente les statuts possibles du test de drépanocytose.
+ */
+enum StatutTestDepranocite: string
 {
-    public const VALUES = [
-        'NOT_TESTED' => 'NON TESTÉ',
-        'TESTED' => 'TESTÉ',
-        'POSITIVE' => 'DIAGNOSTIQUÉ POSITIF',
-        'NEGATIVE' => 'DIAGNOSTIQUÉ NÉGATIF',
-    ];
+    case NOT_TESTED = 'NON TESTÉ';
+    case TESTED = 'TESTÉ';
+    case POSITIVE = 'DIAGNOSTIQUÉ POSITIF';
+    case NEGATIVE = 'DIAGNOSTIQUÉ NÉGATIF';
+
+    /**
+     * Renvoie tous les statuts sous forme de tableau pour les choix (exemple : formulaire).
+     *
+     * @return string[]
+     */
+    public static function choices(): array
+    {
+        return [
+            'Non testé' => self::NOT_TESTED->value,
+            'Testé' => self::TESTED->value,
+            'Diagnostiqué positif' => self::POSITIVE->value,
+            'Diagnostiqué négatif' => self::NEGATIVE->value,
+        ];
+    }
 }

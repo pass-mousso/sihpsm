@@ -5,7 +5,7 @@ namespace App\Form;
 use App\Entity\City;
 use App\Entity\Country;
 use App\Entity\Hospital;
-use App\Entity\HopitalFacility;
+use App\Entity\HospitalFacility;
 use App\Entity\Region;
 use App\EventSubscriber\HospitalFormSubscriber;
 use App\Service\Utils;
@@ -58,7 +58,7 @@ class HospitalType extends AbstractType
             ])
             ->add('type', EntityType::class, [
                 'required' => true,
-                'class' => HopitalFacility::class,
+                'class' => HospitalFacility::class,
                 'choice_label' => 'label',
                 'placeholder' => ""
             ])
